@@ -1,27 +1,43 @@
-# FoodPinguin
+# FoodPenguin
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.6.
+This project is a home recipe book and cooking assistant. You can store your own recipes, or recipes from the web. In addition to viewing the recipes, you can get random recipe suggestions, recipes that you have not used for a long time, recipes based on the ingredients in your fridge, or even plan a good menu for the entire week.
 
-## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Features
 
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+* Show recipes
+  * Show recipes by category
+* Search for recipes
+  * Simple search
+  * Search by attributes like preparation time or dish type
+* view recipe
+    * step-by-step cooking
+    * show all the information
+    * show image (can scroll through all the images)
+    * Images for the different steps?
+    * ingredients
+      * serving number can be changed to change ingredient quantity
+      * ingredients are clickable to search for recipes including the ingredient
+      * ingredients can be added to shopping list
+* Add recipe
+  * A new recipe can be added by giving the necessary information
+  * Recipe infos are given with dropdowns
+  * ingredients and directions use a dynamic number of inputs
+  * Images can be uploaded to the recipe, or given by a link
+  * images can be removed from a recipe
+* Edit recipe
+  * Same as above
+* Import recipe
+  * Send a link to the server, and the server gets the recipe from the link
+  * After scraping the recipe, it can be edited by the user, before adding it to the database
+* Shopping list
+  * Can view the items
+  * Can add new item
+    * with and w/o quantity
+  * Can cross items on the list
+  * Can clear crossed items
+* What is in my fridge
+  * Basically a "search by ingredient"
+  * Search for recipes that include only the selected ingredients, or allow other ones as well?
+* Theme change
+* Mobile view

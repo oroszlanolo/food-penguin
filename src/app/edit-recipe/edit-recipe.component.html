@@ -1,0 +1,22 @@
+<div>
+    <h1 class="text-secondary text-3xl mb-10">Edit Recipe</h1>
+    <h2 class="text-xl">You have imported the recipe details from: <a class="link link-secondary" href="{{url}}">{{url}}</a></h2>
+    <p class="text-xl">You can edit the recipe before adding it to FoodPenguin.</p>
+    <form (ngSubmit)="addRecipe()" class="p-5">
+        <div class="flex flex-row">
+            <div class="flex-1">
+                <label class="label">
+                <span class="label-text">Recipe name</span>
+                </label>
+                <input [value]="recipe?.name" type="text" placeholder="Recipe name..." class="input input-bordered w-full max-w-xs" />
+            </div>
+            <div class="flex-1">
+                <label class="label">
+                    <span class="label-text">Servings</span>
+                </label>
+                <input [value]="recipe?.serving" type="number" class="input input-bordered w-full max-w-xs" />
+            </div>
+        </div>
+        <button  type="submit" [disabled]="recipe === undefined" class="btn btn-secondary mt-10">Add Recipe</button>
+    </form>
+</div>

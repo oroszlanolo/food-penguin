@@ -1,0 +1,12 @@
+<div class="max-w-3xl m-auto">
+    <h1 class="text-3xl text-secondary font-medium">Add new recipe</h1>
+    <div class="my-10">
+        <p>You can add a new recipe by either importing it from a website or by adding it manually.</p>
+        <p>The server currently supports the following websites: None</p>
+    </div>
+    <h2 class="text-xl mb-4 text-secondary font-medium">Import</h2>
+    <div class="flex flex-row gap-4">
+        <input [(ngModel)]="url" type="text" placeholder="Url" class="input input-bordered input-primary flex-1" />
+        <button (click)="importUrl()" class="btn min-w-[10rem]">Import</button>
+    </div>
+</div>

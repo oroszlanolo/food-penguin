@@ -1,0 +1,23 @@
+<div class="flex flex-col gap-5 align-middle">
+    <app-recipe-search (search)="onSearch($event)" ></app-recipe-search>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-7">
+        <a *ngFor="let recipe of recipes"
+            class="card max-w-full bg-base-100 shadow-xl hover:scale-105 transition-transform cursor-pointer"
+            href="/recipe/{{recipe._id}}">
+            <figure *ngIf="recipe.images.length > 0"><img src="{{(recipe.images[0].includes('http') ? '' : (recipeServerUrl + '/')) + recipe.images[0]}}" alt="{{recipe.name}}" /></figure>
+            <figure *ngIf="recipe.images.length === 0"><img src="/assets/penguin-fish.jpg" alt="{{recipe.name}}" /></figure>
+            <div class="card-body">
+                <h2 class="card-title">
+                {{recipe.name}}
+                <div class="badge badge-secondary">TASTY</div>
+                </h2>
+                <p>Lorem ipsum dolor sit amet.</p>
+                <div class="card-actions justify-end">
+                    <div class="badge badge-outline">{{recipe.difficulty | titlecase}}</div>
+                    <div *ngIf="recipe.preparationTime.summary" class="badge badge-outline">{{recipe.preparationTime.summary | titlecase}}</div>
+                    <div *ngFor="let label of recipe.labels" class="badge badge-outline">{{label | titlecase}}</div>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
