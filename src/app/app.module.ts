@@ -11,6 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { NewRecipeComponent } from './new-recipe/new-recipe.component';
 import { EditRecipeComponent } from './edit-recipe/edit-recipe.component';
+import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { EditRecipeComponent } from './edit-recipe/edit-recipe.component';
     RecipeSearchComponent,
     RecipeViewComponent,
     NewRecipeComponent,
-    EditRecipeComponent
+    EditRecipeComponent,
+    ShoppingListComponent
   ],
   imports: [
     BrowserModule,

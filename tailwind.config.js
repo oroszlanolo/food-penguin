@@ -4,7 +4,12 @@ module.exports = {
     "./src/**/*.{html,ts}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      gridTemplateColumns: {
+
+        'recipe': '60% 40%',
+      }
+    },
   },
   plugins: [require("daisyui")],
 }

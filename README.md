@@ -41,3 +41,5 @@ This project is a home recipe book and cooking assistant. You can store your own
   * Search for recipes that include only the selected ingredients, or allow other ones as well?
 * Theme change
 * Mobile view
+
+icons: https://www.vecteezy.com/members/artprodite?utf8=%E2%9C%93&uploads_term=penguin&sort_by=popular&uploads_content_type=all&license_type=all

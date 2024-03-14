@@ -1,0 +1,34 @@
+<div class="px-2">
+    <h1 class="text-3xl text-primary font-medium m-auto w-fit mb-6">Shopping list</h1>
+    <div class="flex flex-col gap-2 md:flex-row items-center max-w-4xl m-auto mb-6">
+        <input type="text"  class="input w-full input-bordered md:w-auto md:flex-1" placeholder="Add new item" />
+        <button class="btn w-full btn-primary md:w-auto text-lg">
+            Add
+        </button>
+    </div>
+    <ul class="max-w-2xl m-auto">
+        <li *ngFor="let item of shoppingList"
+        class="text-xl font-medium p-2 border-2 border-primary-focus rounded-md my-2" >
+            {{item.name}}
+        </li>
+    </ul>
+    <div class="max-w-2xl m-auto mt-6">
+        <h2 class="text-xl font-bold">Completed</h2>
+        <ul>
+            <li *ngFor="let item of completed" 
+            class="text-xl font-medium p-2 border-2 border-base-300 text-base-300 rounded-md my-2" >
+                <div class="flex flex-row justify-between">
+                    <span class="flex flex-row items-center gap-2">
+                        <span class="material-symbols-outlined">
+                            task_alt
+                        </span>
+                        {{item.name}}
+                    </span>
+                    <span class="material-symbols-outlined text-black">
+                        undo
+                    </span>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

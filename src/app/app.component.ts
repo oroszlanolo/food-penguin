@@ -18,14 +18,15 @@ const navBar = [
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit{
-  title = 'FoodPenguin';
   navigationItems = navBar;
   path = "";
+  menuOpen = false;
   constructor(private router: Router, private location: Location) {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
           // Hide progress spinner or progress bar
         this.path = this.location.path(true);
+        this.menuOpen = false;
       }
 
   });

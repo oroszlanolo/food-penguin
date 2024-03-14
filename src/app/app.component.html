@@ -1,18 +1,43 @@
-<div class="navbar bg-primary text-primary-content">
-  <div class="flex-1">
-    <a class="btn btn-ghost normal-case text-xl" routerLink="/home">{{title}}</a>
+<div class="drawer drawer-end" data-theme="emerald">
+  <input id="my-drawer-3" type="checkbox" [(ngModel)]="menuOpen" class="drawer-toggle" /> 
+  <div class="drawer-content">
+    <div class="navbar bg-primary text-primary-content">
+      <div class="flex-1" routerLink="/home">
+        <span class="btn btn-ghost normal-case text-xl font-extrabold" >
+          <div class="w-10 rounded-full bg-white mr-2">
+            <img src="/assets/penguin-head-trans.png" />
+          </div>
+          <span class="text-accent">Food</span>
+          <span class="text-white">Penguin</span>
+        </span>
+      </div>
+      <div class="flex-none hidden lg:block">
+        <ul class="menu menu-horizontal px-1">
+          <li *ngFor="let item of navigationItems"><a [ngClass]="path == item.ref ? 'bg-primary-focus text-white' : ''" routerLink="{{item.ref}}">{{item.title}}</a></li>
+        </ul>
+      </div>
+      
+      <div class="xl:flex-1"></div>
+      
+      <div class="flex-none lg:hidden">
+        <label for="my-drawer-3" class="btn btn-square btn-ghost">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </label>
+      </div> 
+    </div>
+
+    <main class=" max-w-6xl m-auto mt-8">
+      <router-outlet></router-outlet>
+    </main>
   </div>
-  <div class="flex-none">
-    <ul class="menu menu-horizontal px-1">
-      <li *ngFor="let item of navigationItems"><a [ngClass]="path == item.ref ? 'bg-primary-focus' : ''" routerLink="{{item.ref}}">{{item.title}}</a></li>
+  <div class="drawer-side">
+    <label for="my-drawer-3" class="drawer-overlay"></label> 
+    <ul class="menu p-4 w-80 bg-base-100">
+      <!-- Sidebar content here -->
+          <li *ngFor="let item of navigationItems"><a [ngClass]="path == item.ref ? 'bg-primary-focus text-white' : ''" routerLink="{{item.ref}}">{{item.title}}</a></li>
+
+      
     </ul>
-  </div>
-  
-  <div class="form-control flex-1 flex mr-2">
-    <input type="text" placeholder="Search" class="input input-bordered text-base-content self-end" />
+    
   </div>
 </div>
-
-<main class=" max-w-6xl m-auto mt-8 p-2 rounded-md">
-  <router-outlet></router-outlet>
-</main>

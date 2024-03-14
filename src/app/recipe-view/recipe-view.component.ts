@@ -13,6 +13,8 @@ import { FoodService } from '../food.service';
 export class RecipeViewComponent implements OnInit {
   recipe? : Recipe;
   serving? : number;
+  servingRation = 1;
+  selectedDirection = 0;
   recipeServerUrl = "http://127.0.0.1:3000/";
   constructor(
     private route: ActivatedRoute,
@@ -34,14 +36,23 @@ export class RecipeViewComponent implements OnInit {
     }
   }
   increaseServing() {
-    if(this.serving) {
-      this.serving++;
-    }
+    this.updateServing(1);
   }
 
   decreaseServing() {
-    if(this.serving) {
-      this.serving--;
+    if(this.serving && this.serving > 1) {
+      this.updateServing(-1);
     }
+  }
+
+  updateServing(diff : number) {
+    if(this.serving && this.recipe?.serving) {
+      this.serving += diff;
+      this.servingRation = this.serving / this.recipe?.serving;
+    }
+  }
+
+  selectDirection(idx : number) {
+    this.selectedDirection = idx;
   }
 }

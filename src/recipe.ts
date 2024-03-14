@@ -38,7 +38,9 @@ export type When =
 
 export type Label =
     'cheap' |
-    'vegan' |
+    'vegan' ;
+
+export type Allergen = 
     'sugar-free' |
     'lactose-free' |
     'dairy-free' |
@@ -56,5 +58,6 @@ export interface Recipe {
     ingredients: {section?: string, ingredients: Ingredient[]}[],
     directions: string[],
     images: string[],
+    allergens: Allergen[],
     labels: Label[]
 }
