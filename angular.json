@@ -66,10 +66,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "food-pinguin:build:production"
+              "buildTarget": "food-pinguin:build:production"
             },
             "development": {
-              "browserTarget": "food-pinguin:build:development"
+              "buildTarget": "food-pinguin:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -77,7 +77,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "food-pinguin:build"
+            "buildTarget": "food-pinguin:build"
           }
         },
         "test": {
