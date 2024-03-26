@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FoodService } from '../food.service';
 import { Recipe } from 'src/recipe';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-recipes',
@@ -8,7 +9,7 @@ import { Recipe } from 'src/recipe';
   styleUrls: ['./recipes.component.css']
 })
 export class RecipesComponent implements OnInit{
-  recipeServerUrl = "http://127.0.0.1:3000/";
+  recipeServerUrl = environment.serverPath;
   recipes : Recipe[] = [];
   constructor(private foodService: FoodService) {}
 

@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { Recipe } from 'src/recipe';
 import { FoodService } from '../food.service';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -15,7 +16,7 @@ export class RecipeViewComponent implements OnInit {
   serving? : number;
   servingRation = 1;
   selectedDirection = 0;
-  recipeServerUrl = "http://127.0.0.1:3000/";
+  recipeServerUrl = environment.serverPath;
   constructor(
     private route: ActivatedRoute,
     private location: Location,
