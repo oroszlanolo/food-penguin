@@ -1,7 +1,9 @@
 <div>
-    <h1 class="text-secondary text-3xl mb-10">Edit Recipe</h1>
-    <h2 class="text-xl">You have imported the recipe details from: <a class="link link-secondary" href="{{url}}">{{url}}</a></h2>
-    <p class="text-xl">You can edit the recipe before adding it to FoodPenguin.</p>
+    <h1 class="text-accent text-3xl mb-10">Edit Recipe</h1>
+    <div *ngIf="url">
+        <p class="text-xl">You have imported the recipe details from: <a class="link link-secondary" href="{{url}}">{{url}}</a></p>
+        <p class="text-xl">You can edit the recipe before adding it to FoodPenguin.</p>
+    </div>
     <form (ngSubmit)="onSubmit()" [formGroup]="recipeForm" class="p-5">
         <div class="flex flex-row">
             <div class="flex-1">
@@ -17,29 +19,133 @@
                 <input formControlName="serving" type="number" class="input input-bordered w-full max-w-xs" />
             </div>
         </div>
-        <label class="label">
-            <span class="label-text">Preparation Time</span>
-            </label>
-        <div class="flex flex-row" formGroupName="preparationTime">
+        <div class="flex flex-row gap-5 justify-center my-5">
+            <label for="difficulty" [ngClass]="(['text-success','text-warning','text-error'])[difficulty]" class="text-xl">{{difficultyTexts[difficulty]}}</label>
+            <input id="difficulty" formControlName="difficulty" type="range" formControlName="difficulty" min="0" max="2" [ngClass]="(['range-success','range-warning','range-error'])[difficulty]" class="range max-w-xl" />
+        </div>
+        <div formGroupName="dishType" class="flex flex-row flex-wrap items-center gap-3 mb-5">
+            <h2 class="shrink-0 text-secondary">Dish Type:</h2>
+            <div *ngFor="let dType of object.keys(dishTypes.controls)">
+                <label class="cursor-pointer label">
+                    <span class="label-text mr-3">{{dType | dishType}}</span>
+                    <input formControlName="{{dType}}" type="checkbox" class="checkbox checkbox-secondary" />
+                </label>
+            </div>
+        </div>
+        <div formGroupName="when" class="flex flex-row flex-wrap items-center gap-3 mb-5">
+            <h2 class="shrink-0 text-secondary">When:</h2>
+            <div *ngFor="let when of object.keys(whens.controls)">
+                <label class="cursor-pointer label">
+                    <span class="label-text mr-3">{{when | titlecase}}</span>
+                    <input formControlName="{{when}}" type="checkbox" class="checkbox checkbox-secondary" />
+                </label>
+            </div>
+        </div>
+        <div formGroupName="allergens" class="flex flex-row flex-wrap items-center gap-3 mb-5">
+            <h2 class="shrink-0 text-secondary">Allergens:</h2>
+            <div *ngFor="let allergen of object.keys(allergens.controls)">
+                <label class="cursor-pointer label">
+                    <span class="label-text mr-3">{{allergen | titlecase}}</span>
+                    <input formControlName="{{allergen}}" type="checkbox" class="checkbox checkbox-secondary" />
+                </label>
+            </div>
+        </div>
+        <div formGroupName="labels" class="flex flex-row flex-wrap items-center gap-3 mb-5">
+            <h2 class="shrink-0 text-secondary">Labels:</h2>
+            <div *ngFor="let label of object.keys(labels.controls)">
+                <label class="cursor-pointer label">
+                    <span class="label-text mr-3">{{label | titlecase}}</span>
+                    <input formControlName="{{label}}" type="checkbox" class="checkbox checkbox-secondary" />
+                </label>
+            </div>
+        </div>
+        <h2 class="text-secondary">Preparation Time</h2>
+        <div class="flex flex-row gap-3" formGroupName="preparationTime">
             <div class="flex-1">
                 <label class="label">
                     <span class="label-text">Preparation</span>
                 </label>
-                <input formControlName="preparation" type="number" class="input input-bordered w-full max-w-xs" />
+                <div class="flex flex-row items-end gap-1">
+                    <input formControlName="preparation" type="number" class="input input-bordered w-full max-w-xs" />
+                    <p>min</p>
+                </div>
             </div>
             <div class="flex-1">
                 <label class="label">
                     <span class="label-text">Owen</span>
                 </label>
-                <input formControlName="owen" type="number" class="input input-bordered w-full max-w-xs" />
+                <div class="flex flex-row items-end gap-1">
+                    <input formControlName="owen" type="number" class="input input-bordered w-full max-w-xs" />
+                    <p>min</p>
+                </div>
+            </div>
+            <div class="flex-1">
+                <label class="label">
+                    <span class="label-text">Cooking</span>
+                </label>
+                <div class="flex flex-row items-end gap-1">
+                    <input formControlName="cooking" type="number" class="input input-bordered w-full max-w-xs" />
+                    <p>min</p>
+                </div>
             </div>
             <div class="flex-1">
                 <label class="label">
                     <span class="label-text">Total</span>
                 </label>
-                <input formControlName="total" type="number" class="input input-bordered w-full max-w-xs" />
+                <div class="flex flex-row items-end gap-1">
+                    <input formControlName="total" type="number" class="input input-bordered w-full max-w-xs" />
+                    <p>min</p>
+                </div>
             </div>
         </div>
+        <div formArrayName="ingredients">
+            <h2 class="text-secondary mt-5">Ingredients</h2>
+            <div *ngFor="let iSection of ingredients.controls; let i=index;" formGroupName="{{i}}">
+                <div class="flex flex-row items-center gap-3 mb-3 ml-5">
+                    <label for="section-{{i}}">Section:</label>
+                    <input id="section-{{i}}" type="text" formControlName="section" class="input input-bordered input-sm"/>
+                    <button class="btn btn-ghost btn-circle text-error" (click)="removeSection(i)">
+                        <span class="material-symbols-outlined">delete</span>
+                    </button>
+                </div>
+                <div formArrayName="ingredients" class="flex flex-col items-center gap-2">
+                    <div *ngFor="let ingredient of getIngredientsFromSection(iSection).controls; let j=index" formArrayName="{{j}}" class="flex flex-row items-center justify-center gap-3">
+                        <input formControlName="quantity" type="number" step="0.1" class="input input-bordered" />
+                        <input formControlName="unit" type="text" class="input input-bordered" />
+                        <input formControlName="name" type="text" class="input input-bordered" />
+                        <button class="btn btn-ghost btn-circle text-error" (click)="removeIngredient(i, j)">
+                            <span class="material-symbols-outlined">delete</span>
+                        </button>
+                    </div>
+                    <button class="btn btn-outline btn-info mt-3" (click)="addIngredient(i)">
+                        Add Ingredient
+                    </button>
+                </div>
+            </div>
+            <button class="btn btn-outline btn-info mt-3" (click)="addSection()">
+                Add Section
+            </button>
+        </div>
+        <div formArrayName="directions" class="mt-5">
+            <h2 class="text-secondary">Directions</h2>
+            <div class="flex flex-col items-center">
+                <div *ngFor="let direction of directions.controls; let i=index" class="w-full px-5">
+                    <div class="flex-1">
+                        <div class="flex justify-between">
+                            <label for="direction-{{ i }}" class="label label-text">Step {{i+1}}:</label>
+                            <button class="btn btn-ghost btn-circle text-error" (click)="removeDirection(i)">
+                                <span class="material-symbols-outlined">delete</span>
+                            </button>
+                        </div>
+                        <textarea id="direction-{{ i }}" formControlName="{{i}}" type="text" class="input input-bordered w-full h-20">
+                        </textarea>
+                    </div>
+                </div>
+                <button class="btn btn-outline btn-info btn-circle mt-5" (click)="addDirection()">
+                    <span class="material-symbols-outlined">add</span>
+                </button>
+            </div>
+          </div>
         <button  type="submit" [disabled]="recipe === undefined" class="btn btn-secondary mt-10">Add Recipe</button>
     </form>
 </div>

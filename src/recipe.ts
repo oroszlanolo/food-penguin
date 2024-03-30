@@ -20,15 +20,15 @@ export interface PreparationTime {
 
 export type Difficulty = 'easy' | 'intermediate' | 'expert';
 export type DishType = 
-    'cold appetizer' | 
-    'warm appetizer' | 
-    'amuse-bouche' |
+    'cold_appetizer' | 
+    'warm_appetizer' | 
+    'amuse_bouche' |
     'dessert' |
     'garnish' |
-    'main dish' |
+    'main_dish' |
     'soup' |
     'drink' |
-    'other course';
+    'other_course';
 export type When =
     'breakfast' |
     'lunch' |

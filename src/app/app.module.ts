@@ -12,6 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NewRecipeComponent } from './new-recipe/new-recipe.component';
 import { EditRecipeComponent } from './edit-recipe/edit-recipe.component';
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
+import { DishTypePipe } from './pipes/dish-type.pipe';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { ShoppingListComponent } from './shopping-list/shopping-list.component';
     RecipeViewComponent,
     NewRecipeComponent,
     EditRecipeComponent,
-    ShoppingListComponent
+    ShoppingListComponent,
+    DishTypePipe
   ],
   imports: [
     BrowserModule,
