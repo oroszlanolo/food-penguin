@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FoodService } from '../food.service';
+import { FoodService } from '../../services/food.service';
 import { Allergen, Difficulty, DishType, Ingredient, IngredientSection, Label, Recipe, When } from 'src/recipe';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { environment } from 'src/environments/environment';
+import { ImageService } from 'src/app/services/image.service';
 
 @Component({
   selector: 'app-edit-recipe',
@@ -10,6 +12,7 @@ import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Valida
   styleUrls: ['./edit-recipe.component.css']
 })
 export class EditRecipeComponent implements OnInit{
+  recipeServerUrl = environment.serverPath;
   url = '';
   id = '';
   recipe? : Recipe;
@@ -136,6 +139,7 @@ export class EditRecipeComponent implements OnInit{
     private router : Router,
     private route : ActivatedRoute,
     private foodService : FoodService,
+    private imgService: ImageService,
     private fb: FormBuilder) {}
 
   ngOnInit(): void {
@@ -160,6 +164,12 @@ export class EditRecipeComponent implements OnInit{
       this.foodService.addRecipe(this.recipe).subscribe(res => 
         this.router.navigate([`/recipe/${res}`]));
     }
+  }
+
+  addImg(event : Event) {
+    this.imgService.addImage(event).subscribe(resp => {
+      console.log(resp);
+    });
   }
 
   onSubmit() {

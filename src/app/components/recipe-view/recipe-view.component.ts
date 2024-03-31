@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { Recipe } from 'src/recipe';
-import { FoodService } from '../food.service';
+import { FoodService } from '../../services/food.service';
 import { environment } from 'src/environments/environment';
 
 

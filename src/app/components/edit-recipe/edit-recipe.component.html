@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="flex flex-row gap-5 justify-center my-5">
-            <label for="difficulty" [ngClass]="(['text-success','text-warning','text-error'])[difficulty]" class="text-xl">{{difficultyTexts[difficulty]}}</label>
+            <label for="difficulty" [ngClass]="(['text-success','text-warning','text-error'])[difficulty]" class="text-xl w-40">{{difficultyTexts[difficulty]}}</label>
             <input id="difficulty" formControlName="difficulty" type="range" formControlName="difficulty" min="0" max="2" [ngClass]="(['range-success','range-warning','range-error'])[difficulty]" class="range max-w-xl" />
         </div>
         <div formGroupName="dishType" class="flex flex-row flex-wrap items-center gap-3 mb-5">
@@ -96,6 +96,18 @@
                     <input formControlName="total" type="number" class="input input-bordered w-full max-w-xs" />
                     <p>min</p>
                 </div>
+            </div>
+        </div>
+        <div>
+            <h2 class="text-secondary my-5">Images</h2>
+            <input type="file" class="hidden" (change)="addImg($event)" #fileUpload>
+            <div class="flex flex-row flex-wrap gap-5">
+                <img *ngFor="let source of this.recipe?.images; let i = index" src="{{recipeServerUrl + 'api/getImage?id=' + source + '&size=small'}}" alt="img-{{i}}" class="w-52">
+                <button class="w-52 flex items-center justify-center border-2 hover:scale-110 transition-transform" (click)="fileUpload.click()" type="button">
+                    <span class="material-symbols-outlined text-4xl text-secondary">
+                        add_circle
+                        </span>
+                </button>
             </div>
         </div>
         <div formArrayName="ingredients">

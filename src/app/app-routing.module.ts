@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './home/home.component';
-import { RecipesComponent } from './recipes/recipes.component';
-import { RecipeViewComponent } from './recipe-view/recipe-view.component';
-import { NewRecipeComponent } from './new-recipe/new-recipe.component';
-import { EditRecipeComponent } from './edit-recipe/edit-recipe.component';
-import { ShoppingListComponent } from './shopping-list/shopping-list.component';
+import { HomeComponent } from './components/home/home.component';
+import { RecipesComponent } from './components/recipes/recipes.component';
+import { RecipeViewComponent } from './components/recipe-view/recipe-view.component';
+import { NewRecipeComponent } from './components/new-recipe/new-recipe.component';
+import { EditRecipeComponent } from './components/edit-recipe/edit-recipe.component';
+import { ShoppingListComponent } from './components/shopping-list/shopping-list.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
