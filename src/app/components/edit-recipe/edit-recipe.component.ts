@@ -2,14 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FoodService } from '../../services/food.service';
 import { Allergen, Difficulty, DishType, Ingredient, IngredientSection, Label, Recipe, When } from 'src/recipe';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { ImageService } from 'src/app/services/image.service';
+import { DishTypePipe } from '../../pipes/dish-type.pipe';
+import { NgIf, NgClass, NgFor, TitleCasePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-edit-recipe',
-  templateUrl: './edit-recipe.component.html',
-  styleUrls: ['./edit-recipe.component.css']
+    selector: 'app-edit-recipe',
+    templateUrl: './edit-recipe.component.html',
+    styleUrls: ['./edit-recipe.component.css'],
+    standalone: true,
+    imports: [NgIf, FormsModule, ReactiveFormsModule, NgClass, NgFor, TitleCasePipe, DishTypePipe]
 })
 export class EditRecipeComponent implements OnInit{
   recipeServerUrl = environment.serverPath;

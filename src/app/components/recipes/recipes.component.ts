@@ -2,11 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { FoodService } from '../../services/food.service';
 import { Recipe } from 'src/recipe';
 import { environment } from 'src/environments/environment';
+import { NgFor, NgIf, TitleCasePipe } from '@angular/common';
+import { RecipeSearchComponent } from '../recipe-search/recipe-search.component';
 
 @Component({
-  selector: 'app-recipes',
-  templateUrl: './recipes.component.html',
-  styleUrls: ['./recipes.component.css']
+    selector: 'app-recipes',
+    templateUrl: './recipes.component.html',
+    styleUrls: ['./recipes.component.css'],
+    standalone: true,
+    imports: [RecipeSearchComponent, NgFor, NgIf, TitleCasePipe]
 })
 export class RecipesComponent implements OnInit{
   recipeServerUrl = environment.serverPath;

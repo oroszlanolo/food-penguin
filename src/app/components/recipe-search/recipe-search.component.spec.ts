@@ -8,8 +8,8 @@ describe('RecipeSearchComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RecipeSearchComponent ]
-    })
+    imports: [RecipeSearchComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(RecipeSearchComponent);

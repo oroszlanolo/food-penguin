@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
-import { Router, Event, NavigationEnd} from '@angular/router';
+import { Location, NgFor, NgClass } from '@angular/common';
+import { Router, Event, NavigationEnd, RouterLink, RouterOutlet } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 const navBar = [
   {ref: "/home", title: "Home"},
@@ -13,9 +14,11 @@ const navBar = [
 ]
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.css'],
+    standalone: true,
+    imports: [FormsModule, RouterLink, NgFor, NgClass, RouterOutlet]
 })
 export class AppComponent implements OnInit{
   navigationItems = navBar;

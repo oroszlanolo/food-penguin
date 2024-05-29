@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
+import { Location, NgIf, NgFor, NgClass, DecimalPipe, TitleCasePipe } from '@angular/common';
 import { Recipe } from 'src/recipe';
 import { FoodService } from '../../services/food.service';
 import { environment } from 'src/environments/environment';
 
 
 @Component({
-  selector: 'app-recipe-view',
-  templateUrl: './recipe-view.component.html',
-  styleUrls: ['./recipe-view.component.css']
+    selector: 'app-recipe-view',
+    templateUrl: './recipe-view.component.html',
+    styleUrls: ['./recipe-view.component.css'],
+    standalone: true,
+    imports: [NgIf, NgFor, NgClass, DecimalPipe, TitleCasePipe]
 })
 export class RecipeViewComponent implements OnInit {
   recipe? : Recipe;

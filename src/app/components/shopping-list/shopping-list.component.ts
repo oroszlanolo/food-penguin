@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ShoppingList } from 'src/shopping';
 import { ShoppingListService } from '../../services/shopping-list.service';
+import { NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-shopping-list',
-  templateUrl: './shopping-list.component.html',
-  styleUrls: ['./shopping-list.component.css']
+    selector: 'app-shopping-list',
+    templateUrl: './shopping-list.component.html',
+    styleUrls: ['./shopping-list.component.css'],
+    standalone: true,
+    imports: [NgFor]
 })
 export class ShoppingListComponent implements OnInit{
   shoppingList: ShoppingList = [];

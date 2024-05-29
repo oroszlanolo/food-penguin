@@ -2,7 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { DishType } from 'src/recipe';
 
 @Pipe({
-  name: 'dishType'
+    name: 'dishType',
+    standalone: true
 })
 export class DishTypePipe implements PipeTransform {
 
