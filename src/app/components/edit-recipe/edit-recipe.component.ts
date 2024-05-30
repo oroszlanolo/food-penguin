@@ -126,10 +126,12 @@ export class EditRecipeComponent implements OnInit{
     this.ingredients.removeAt(idx);
   }
   removeIngredient(sectionIdx: number, ingredientIdx: number) {
+    console.log(sectionIdx, ingredientIdx);
     const iArray = this.ingredients.controls[sectionIdx].get('ingredients') as FormArray;
     if(iArray) {
       iArray.removeAt(ingredientIdx);
     }
+    console.log(iArray);
   }
 
   addDirection(dir: string = '') {

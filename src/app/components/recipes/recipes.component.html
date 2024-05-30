@@ -1,22 +1,30 @@
 <div class="flex flex-col gap-5 align-middle">
     <app-recipe-search (search)="onSearch($event)" ></app-recipe-search>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-7 m-4">
-        <a *ngFor="let recipe of recipes"
-            class="card max-w-full bg-base-100 drop-shadow-xl overflow-hidden hover:scale-105 transition-transform cursor-pointer"
-            href="/recipe/{{recipe._id}}">
-            <figure class="h-60" *ngIf="recipe.images.length > 0"><img class="min-h-full object-cover" src="{{recipe.images[0].includes('http') ? recipe.images[0] : (recipeServerUrl + 'api/getImage?id=' + recipe.images[0] + '&size=medium')}}" alt="{{recipe.name}}" /></figure>
-            <figure class="h-60" *ngIf="recipe.images.length === 0"><img class="min-h-full object-cover" src="/assets/penguin-fish.jpg" alt="{{recipe.name}}" /></figure>
-            <div class="card-body bg-slate-50">
-                <h2 class="card-title text-2xl">
-                {{recipe.name}}
-                </h2>
-                <div class="flex-1"></div>
-                <div class="card-actions justify-end">
-                    <div class="badge badge-outline">{{recipe.difficulty | titlecase}}</div>
-                    <div *ngIf="recipe.preparationTime.summary" class="badge badge-outline">{{recipe.preparationTime.summary | titlecase}}</div>
-                    <div *ngFor="let label of recipe.labels" class="badge badge-outline">{{label | titlecase}}</div>
+        @for(recipe of recipes; track recipe._id){
+            <a href="/recipe/{{recipe._id}}"
+            class="card max-w-full bg-base-100 drop-shadow-xl overflow-hidden hover:scale-105 transition-transform cursor-pointer">
+                @if(recipe.images.length > 0) {
+                    <figure class="h-60"><img class="min-h-full object-cover" src="{{recipe.images[0].includes('http') ? recipe.images[0] : (recipeServerUrl + 'api/getImage?id=' + recipe.images[0] + '&size=medium')}}" alt="{{recipe.name}}" /></figure>
+                } @else {
+                    <figure class="h-60"><img class="min-h-full object-cover" src="/assets/penguin-fish.jpg" alt="{{recipe.name}}" /></figure>
+                }
+                <div class="card-body bg-slate-50">
+                    <h2 class="card-title text-2xl">
+                    {{recipe.name}}
+                    </h2>
+                    <div class="flex-1"></div>
+                    <div class="card-actions justify-end">
+                        <div class="badge badge-outline">{{recipe.difficulty | titlecase}}</div>
+                        @if(recipe.preparationTime.summary) {
+                            <div class="badge badge-outline">{{recipe.preparationTime.summary | titlecase}}</div>
+                        }
+                        @for(label of recipe.labels; track label) {
+                            <div class="badge badge-outline">{{label | titlecase}}</div>
+                        }
+                    </div>
                 </div>
-            </div>
-        </a>
+            </a>
+        }
     </div>
 </div>

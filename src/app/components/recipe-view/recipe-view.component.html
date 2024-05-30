@@ -1,8 +1,12 @@
-<div *ngIf="recipe" class="md:grid md:grid-cols-recipe md:gap-4 md:p-2">
+@if(recipe) {
+<div class="md:grid md:grid-cols-recipe md:gap-4 md:p-2">
     <div class="mb-4 ">
         <h1 class="m-auto w-fit  mb-8 text-4xl font-semibold text-center">{{recipe.name}}</h1>
-        <img *ngIf="recipe.images.length > 0" class="w-full mt-4" src="{{recipe.images[0].includes('http') ? recipe.images[0] : (recipeServerUrl + 'api/getImage?id=' + recipe.images[0] + '&size=medium')}}" alt="{{recipe.name}} image">
-        <img *ngIf="recipe.images.length == 0" class="w-1/2 m-auto mt-4" src="/assets/penguin-klos-white.png" alt="{{recipe.name}} image">
+        @if(recipe.images.length > 0) {
+            <img class="w-full mt-4" src="{{recipe.images[0].includes('http') ? recipe.images[0] : (recipeServerUrl + 'api/getImage?id=' + recipe.images[0] + '&size=medium')}}" alt="{{recipe.name}} image">
+        } @else {
+            <img class="w-1/2 m-auto mt-4" src="/assets/penguin-klos-white.png" alt="{{recipe.name}} image">
+        }
         <div class="flex flex-row items-center justify-evenly mt-6">
             <div class="flex flex-row items-center gap-2">
                 <span class="material-symbols-outlined text-4xl text-accent">
@@ -26,54 +30,66 @@
         <div class="divider"></div> 
     </div>
     <div class="md:row-span-2 px-2">
-        <div *ngIf="serving !== undefined" class="flex flex-row justify-center align-middle items-center gap-2 md:mt-20 mb-2">
-            <span class="text-2xl">Serving:</span>
-            <button class="btn btn-ghost btn-circle" [disabled]="serving <= 1" (click)="decreaseServing()">
-                <span class="material-symbols-outlined">
-                remove
-                </span>
-            </button>
-            <span class="text-3xl font-bold">{{serving}}</span>
-            <button class="btn btn-ghost btn-circle" (click)="increaseServing()">
-                <span class="material-symbols-outlined">
-                add
-                </span>
-            </button>
-        <div class="divider"></div> 
-        </div>
+        @if(serving !== undefined) {
+            <div class="flex flex-row justify-center align-middle items-center gap-2 md:mt-20 mb-2">
+                <span class="text-2xl">Serving:</span>
+                <button class="btn btn-ghost btn-circle" [disabled]="serving <= 1" (click)="decreaseServing()">
+                    <span class="material-symbols-outlined">
+                    remove
+                    </span>
+                </button>
+                <span class="text-3xl font-bold">{{serving}}</span>
+                <button class="btn btn-ghost btn-circle" (click)="increaseServing()">
+                    <span class="material-symbols-outlined">
+                    add
+                    </span>
+                </button>
+            <div class="divider"></div> 
+            </div>
+        }
         <div class="divider hidden md:flex"></div> 
         <h2 class="text-2xl font-medium text-accent">Ingredients</h2>
-        <div *ngFor="let section of recipe.ingredients; index as i" class="py-2">
-            <p class="text-xl font-medium" *ngIf="section.section">{{section.section}}</p>
-            <div class="p-2 px-4">
-                <ul>
-                    <li *ngFor="let ingredient of section.ingredients; index as j" class="mb-1 text-xl">
-                        <input type="checkbox" id="cb-ing-{{i}}-{{j}}" class="mr-2">
-                        <label for="cb-ing-{{i}}-{{j}}">
-                            <span class="mr-1" *ngIf="ingredient.quantity > 0">{{ingredient.quantity * servingRation | number: '1.0-1'}}</span>
-                            <span class="mr-1">{{ingredient.unit}}</span>
-                            <span class="text-secondary font-medium">{{ingredient.name}}</span>
-                        </label>
-                    </li>
-                </ul>
+        @for(section of recipe.ingredients; track section; let i = $index) {
+            <div class="py-2">
+                @if(section.section) {
+                    <p class="text-xl font-medium" >{{section.section}}</p>
+                }
+                <div class="p-2 px-4">
+                    <ul>
+                        @for(ingredient of section.ingredients; track ingredient.name; let j = $index) {
+                            <li class="mb-1 text-xl">
+                                <input type="checkbox" id="cb-ing-{{i}}-{{j}}" class="mr-2">
+                                <label for="cb-ing-{{i}}-{{j}}">
+                                    @if(ingredient.quantity > 0){
+                                        <span class="mr-1">{{ingredient.quantity * servingRation | number: '1.0-1'}}</span>
+                                    }
+                                    <span class="mr-1">{{ingredient.unit}}</span>
+                                    <span class="text-secondary font-medium">{{ingredient.name}}</span>
+                                </label>
+                            </li>
+                        }
+                    </ul>
+                </div>
             </div>
-        </div>
+        }
         <div class="flex flex-row justify-center w-full my-2">
             <button class="btn btn-primary" disabled>Add to Shopping List</button>
         </div>
     </div>
     <div class="px-2">
         <h2 class="text-2xl font-medium my-2 text-accent">Directions</h2>
-        <div *ngFor="let step of recipe.directions; index as i"
-            [ngClass]="i == selectedDirection ? 'bg-base-200' : 'bg-base-100'"
-            class="flex flex-row font-medium p-2 my-2 rounded-md cursor-pointer hover:bg-base-200"
-            (click)="selectDirection(i)">
-            <div class="avatar placeholder mr-4">
-                <div class="bg-neutral-focus text-white rounded-full w-8 h-8">
-                  <span class="text-lg font-bold">{{i + 1}}</span>
-                </div>
-              </div> 
-            <p class="text-lg">{{step}}</p>
-        </div>
+        @for(step of recipe.directions; track step; let i = $index){
+            <div [ngClass]="i == selectedDirection ? 'bg-base-200' : 'bg-base-100'"
+                class="flex flex-row font-medium p-2 my-2 rounded-md cursor-pointer hover:bg-base-200"
+                (click)="selectDirection(i)">
+                <div class="avatar placeholder mr-4">
+                    <div class="bg-neutral-focus text-white rounded-full w-8 h-8">
+                    <span class="text-lg font-bold">{{i + 1}}</span>
+                    </div>
+                </div> 
+                <p class="text-lg">{{step}}</p>
+            </div>
+        }
     </div>
 </div>
+}

@@ -13,8 +13,11 @@
       </div>
       <div class="flex-none hidden lg:block">
         <ul class="menu menu-horizontal px-1">
-          <li *ngFor="let item of navigationItems"><a [ngClass]="path == item.ref ? 'bg-primary-focus text-white' : ''" routerLink="{{item.ref}}">{{item.title}}</a></li>
-
+          @for(item of navigationItems; track item.title) {
+            <li>
+              <a [ngClass]="path == item.ref ? 'bg-primary-focus text-white' : ''" routerLink="{{item.ref}}">{{item.title}}</a>
+            </li>
+          }
         </ul>
       </div>
       
@@ -37,11 +40,15 @@
     <label for="my-drawer-3" class="drawer-overlay"></label> 
     <ul class="menu p-4 w-80 bg-base-100">
       <!-- Sidebar content here -->
-          <li *ngFor="let item of navigationItems"><a [ngClass]="path == item.ref ? 'bg-primary-focus text-white' : ''" routerLink="{{item.ref}}">{{item.title}}</a></li>
-          <li>
-              <app-login />
-          </li>
-        </ul>
+      @for(item of navigationItems; track item.title) {
+        <li>
+          <a [ngClass]="path == item.ref ? 'bg-primary-focus text-white' : ''" routerLink="{{item.ref}}">{{item.title}}</a>
+        </li>
+      }
+      <li>
+          <app-login />
+      </li>
+    </ul>
         
       </div>
     </div>

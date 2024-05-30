@@ -7,28 +7,30 @@
         </button>
     </div>
     <ul class="max-w-2xl m-auto">
-        <li *ngFor="let item of shoppingList"
-        class="text-xl font-medium p-2 border-2 border-primary-focus rounded-md my-2" >
-            {{item.name}}
-        </li>
+        @for(item of shoppingList; track item) {
+            <li class="text-xl font-medium p-2 border-2 border-primary-focus rounded-md my-2" >
+                {{item.name}}
+            </li>
+        }
     </ul>
     <div class="max-w-2xl m-auto mt-6">
         <h2 class="text-xl font-bold">Completed</h2>
         <ul>
-            <li *ngFor="let item of completed" 
-            class="text-xl font-medium p-2 border-2 border-base-300 text-base-300 rounded-md my-2" >
-                <div class="flex flex-row justify-between">
-                    <span class="flex flex-row items-center gap-2">
-                        <span class="material-symbols-outlined">
-                            task_alt
+            @for(item of completed; track item) {
+                <li class="text-xl font-medium p-2 border-2 border-base-300 text-base-300 rounded-md my-2" >
+                    <div class="flex flex-row justify-between">
+                        <span class="flex flex-row items-center gap-2">
+                            <span class="material-symbols-outlined">
+                                task_alt
+                            </span>
+                            {{item.name}}
                         </span>
-                        {{item.name}}
-                    </span>
-                    <span class="material-symbols-outlined text-black">
-                        undo
-                    </span>
-                </div>
-            </li>
+                        <span class="material-symbols-outlined text-black">
+                            undo
+                        </span>
+                    </div>
+                </li>
+            }
         </ul>
     </div>
 </div>
