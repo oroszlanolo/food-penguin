@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Location, NgFor, NgClass } from '@angular/common';
 import { Router, Event, NavigationEnd, RouterLink, RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { LoginComponent } from "./components/login/login.component";
+import { UserService } from './services/user.service';
 
 const navBar = [
   {ref: "/home", title: "Home"},
@@ -18,13 +20,18 @@ const navBar = [
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css'],
     standalone: true,
-    imports: [FormsModule, RouterLink, NgFor, NgClass, RouterOutlet]
+    imports: [FormsModule, RouterLink, NgFor, NgClass, RouterOutlet, LoginComponent]
 })
 export class AppComponent implements OnInit{
   navigationItems = navBar;
   path = "";
   menuOpen = false;
-  constructor(private router: Router, private location: Location) {
+
+  get loggedIn() {
+    return this.userService.loggedIn;
+  }
+
+  constructor(private router: Router, private location: Location, private userService: UserService) {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
           // Hide progress spinner or progress bar
