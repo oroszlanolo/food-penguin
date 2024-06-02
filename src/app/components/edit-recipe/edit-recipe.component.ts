@@ -149,15 +149,17 @@ export class EditRecipeComponent implements OnInit{
     private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    this.url = this.route.snapshot.paramMap.get('url') ?? '';
     this.id = this.route.snapshot.paramMap.get('id') ?? '';
     console.log(this.object.keys(this.dishTypes));
-    if(this.url !== '') {
-      this.foodService.scrapeRecipe(this.url).subscribe(recipe => {
-        this.recipe = recipe;
-        this.#updateRecipeForm();
-      });
-    } else if(this.id !== '') {
+    if(window.history.state.recipe) {
+      this.recipe = window.history.state.recipe;
+      this.#updateRecipeForm();
+    }
+    if(window.history.state.url) {
+      this.url = window.history.state.url;
+    }
+
+    if(this.id !== '') {
       this.foodService.getRecipe(this.id).subscribe(recipe => {
         this.recipe = recipe;
         this.#updateRecipeForm();

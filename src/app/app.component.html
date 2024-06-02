@@ -3,11 +3,11 @@
   <div class="drawer-content">
     <div class="navbar bg-primary text-primary-content">
       <div class="flex-1" routerLink="/home">
-        <span class="btn btn-ghost normal-case text-xl font-extrabold" >
+        <span class="btn btn-ghost normal-case text-xl font-extrabold gap-1" >
           <div class="w-10 rounded-full bg-white mr-2">
             <img src="/assets/penguin-head-trans.png" />
           </div>
-          <span class="text-accent">Food</span>
+          <span class="text-error">Food</span>
           <span class="text-white">Penguin</span>
         </span>
       </div>
@@ -15,7 +15,7 @@
         <ul class="menu menu-horizontal px-1">
           @for(item of navigationItems; track item.title) {
             <li>
-              <a [ngClass]="path == item.ref ? 'bg-primary-focus text-white' : ''" routerLink="{{item.ref}}">{{item.title}}</a>
+              <a [ngClass]="path == item.ref ? '!bg-primary-content !text-white' : ''" routerLink="{{item.ref}}">{{item.title}}</a>
             </li>
           }
         </ul>
@@ -42,7 +42,7 @@
       <!-- Sidebar content here -->
       @for(item of navigationItems; track item.title) {
         <li>
-          <a [ngClass]="path == item.ref ? 'bg-primary-focus text-white' : ''" routerLink="{{item.ref}}">{{item.title}}</a>
+          <a [ngClass]="path == item.ref ? '!bg-primary-content !text-white' : ''" routerLink="{{item.ref}}">{{item.title}}</a>
         </li>
       }
       <li>
