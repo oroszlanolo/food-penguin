@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment';
 import { ImageService } from 'src/app/services/image.service';
 import { DishTypePipe } from '../../pipes/dish-type.pipe';
 import { NgIf, NgClass, NgFor, TitleCasePipe } from '@angular/common';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
     selector: 'app-edit-recipe',
@@ -21,6 +22,9 @@ export class EditRecipeComponent implements OnInit{
   id = '';
   recipe? : Recipe;
   object = Object;
+  get loggedIn(){
+    return this.user.loggedIn;
+  }
   recipeForm = this.fb.group({
     name: ['', Validators.required],
     serving: [0, Validators.required],
@@ -146,7 +150,8 @@ export class EditRecipeComponent implements OnInit{
     private route : ActivatedRoute,
     private foodService : FoodService,
     private imgService: ImageService,
-    private fb: FormBuilder) {}
+    private fb: FormBuilder,
+    private user: UserService) {}
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id') ?? '';
@@ -165,6 +170,23 @@ export class EditRecipeComponent implements OnInit{
         this.#updateRecipeForm();
       })
     }
+
+    if(!this.recipe) {
+      this.recipe = {
+        name: '',
+        difficulty: 'easy',
+        dishType: [],
+        serving: 1,
+        when: [],
+        preparationTime: {},
+        ingredients: [],
+        directions: [],
+        images: [],
+        allergens: [],
+        labels: []
+      }
+      this.#updateRecipeForm();
+    }
   }
 
   addRecipe() {
@@ -177,7 +199,13 @@ export class EditRecipeComponent implements OnInit{
   addImg(event : Event) {
     this.imgService.addImage(event).subscribe(resp => {
       console.log(resp);
+      this.recipe?.images.push(resp);
+      console.log(this.recipe);
     });
+  }
+
+  validateRecipe(): boolean {
+    return true; // TODO
   }
 
   onSubmit() {

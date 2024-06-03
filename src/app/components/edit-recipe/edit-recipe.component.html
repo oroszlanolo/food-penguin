@@ -109,13 +109,18 @@
             </div>
         </div>
         <div>
-            <h2 class="text-secondary my-5">Images</h2>
+            <div class="my-5">
+            <h2 class="text-secondary">Images</h2>
+                @if(!loggedIn) {
+                    <p class="text-warning">Cannot add images without logging in.</p>
+                }
+            </div>
             <input type="file" class="hidden" (change)="addImg($event)" #fileUpload>
             <div class="flex flex-row flex-wrap gap-5">
                 @for(source of recipe?.images; track source; let i = $index) {
-                    <img src="{{recipeServerUrl + 'api/getImage?id=' + source + '&size=small'}}" alt="img-{{i}}" class="w-52">
+                    <img src="{{recipeServerUrl + 'api/image?id=' + source + '&size=small'}}" alt="img-{{i}}" class="w-52">
                     }
-                <button class="w-52 flex items-center justify-center border-2 hover:scale-110 transition-transform"
+                <button [disabled]="!loggedIn" [class.hover:scale-110]="loggedIn" [class.opacity-50]="!loggedIn" class="w-52 flex items-center justify-center border-2 transition-transform"
                     (click)="fileUpload.click()" type="button">
                     <span class="material-symbols-outlined text-4xl text-secondary">
                         add_circle
@@ -177,6 +182,6 @@
                 </button>
             </div>
           </div>
-        <button  type="submit" [disabled]="recipe === undefined" class="btn btn-secondary mt-10">Add Recipe</button>
+        <button type="submit" [disabled]="!validateRecipe() || !loggedIn" class="btn btn-secondary mt-10">Add Recipe</button>
     </form>
 </div>

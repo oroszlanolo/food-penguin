@@ -48,7 +48,7 @@ export type Allergen =
     'gluten-free';
 
 export interface Recipe {
-    _id: string,
+    _id?: string,
     name: string,
     difficulty: Difficulty,
     dishType: DishType[],
