@@ -1,19 +1,29 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ShoppingList } from 'src/shopping';
+import { environment } from 'src/environments/environment';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ShoppingListService {
   
-  recipeServerUrl = "http://127.0.0.1:3000/api";
+  recipeServerUrl = `${environment.serverPath}api`;
 
   constructor(
-    private http: HttpClient) { }
+    private http: HttpClient,
+    private user: UserService) { }
 
   getList() : Observable<ShoppingList> {
-    return this.http.get<ShoppingList>(this.recipeServerUrl + '/shoppinglist');
+    if(!this.user.accessToken) {
+      return of();
+    }
+    return this.http.get<ShoppingList>((this.recipeServerUrl + '/shoppinglist'), {
+      headers: {
+        'Authorization':  this.user.accessToken
+      }
+    });
   }
 }

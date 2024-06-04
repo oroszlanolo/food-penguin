@@ -37,9 +37,13 @@ export class FoodService {
   }
 
   addRecipe(recipe: Recipe) : Observable<any> {
+    if(!this.user.accessToken) {
+      return of('');
+    }
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
+        'Authorization':  this.user.accessToken
       })
     };
     return this.http.post<Recipe>(this.recipeServerUrl + '/recipe', {recipe: JSON.stringify(recipe)}, httpOptions);
