@@ -155,6 +155,7 @@ export class EditRecipeComponent implements OnInit{
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id') ?? '';
+    console.log(this.id);
     console.log(this.object.keys(this.dishTypes));
     if(window.history.state.recipe) {
       this.recipe = window.history.state.recipe;
@@ -164,11 +165,14 @@ export class EditRecipeComponent implements OnInit{
       this.url = window.history.state.url;
     }
 
-    if(this.id !== '') {
+    if(this.id !== '' && !this.recipe) {
       this.foodService.getRecipe(this.id).subscribe(recipe => {
         this.recipe = recipe;
         this.#updateRecipeForm();
       })
+    }
+    if(this.recipe?._id) {
+      this.id = this.recipe?._id;
     }
 
     if(!this.recipe) {
@@ -190,9 +194,12 @@ export class EditRecipeComponent implements OnInit{
   }
 
   addRecipe() {
+    console.log(this.recipe);
     if(this.recipe) {
-      this.foodService.addRecipe(this.recipe).subscribe(res => 
-        this.router.navigate([`/recipe/${res}`]));
+      this.foodService.addOrUpdateRecipe(this.recipe).subscribe({
+        complete: () => this.router.navigate([`/recipe/${this.recipe?._id}`]),
+        error: err => console.log(err)
+      });
     }
   }
 

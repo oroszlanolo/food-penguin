@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Location, NgIf, NgFor, NgClass, DecimalPipe, TitleCasePipe } from '@angular/common';
 import { Recipe } from 'src/recipe';
 import { FoodService } from '../../services/food.service';
@@ -20,6 +20,7 @@ export class RecipeViewComponent implements OnInit {
   selectedDirection = 0;
   recipeServerUrl = environment.serverPath;
   constructor(
+    private router: Router,
     private route: ActivatedRoute,
     private location: Location,
     private foodService : FoodService
@@ -57,5 +58,9 @@ export class RecipeViewComponent implements OnInit {
 
   selectDirection(idx : number) {
     this.selectedDirection = idx;
+  }
+
+  edit() {
+    this.router.navigate(['/edit'], {state: {recipe: this.recipe}});
   }
 }

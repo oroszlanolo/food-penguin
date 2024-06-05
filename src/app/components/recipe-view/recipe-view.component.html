@@ -30,6 +30,14 @@
         <div class="divider"></div> 
     </div>
     <div class="md:row-span-2 px-2">
+        <div class="flex w-full items-center justify-end">
+            <button class="btn btn-circle btn-ghost" (click)="edit()">
+                <span class="material-symbols-outlined">edit</span>
+            </button>
+            <button class="btn btn-circle btn-ghost !bg-transparent" disabled="true">
+                <span class="material-symbols-outlined">delete</span>
+            </button>
+        </div>
         @if(serving !== undefined) {
             <div class="flex flex-row justify-center align-middle items-center gap-2 md:mt-20 mb-2">
                 <span class="text-2xl">Serving:</span>
