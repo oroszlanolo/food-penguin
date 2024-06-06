@@ -16,7 +16,7 @@ export class DishTypePipe implements PipeTransform {
       case 'amuse_bouche':
           return "Amuse Bouche";
       case 'dessert':
-          return "Desser";
+          return "Dessert";
       case 'garnish':
           return "Garnish";
       case 'main_dish':

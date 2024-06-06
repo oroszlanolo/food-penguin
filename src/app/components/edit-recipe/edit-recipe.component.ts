@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FoodService } from '../../services/food.service';
-import { Allergen, Difficulty, DishType, Ingredient, IngredientSection, Label, Recipe, When } from 'src/recipe';
+import { Allergen, Difficulty, DishType, Ingredient, Section, Label, Recipe, When } from 'src/recipe';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { ImageService } from 'src/app/services/image.service';
@@ -25,6 +25,7 @@ export class EditRecipeComponent implements OnInit{
   get loggedIn(){
     return this.user.loggedIn;
   }
+  sectionId = 2;
   recipeForm = this.fb.group({
     name: ['', Validators.required],
     serving: [0, Validators.required],
@@ -64,13 +65,13 @@ export class EditRecipeComponent implements OnInit{
       cheap: false,
       vegan: false
     }),
-    ingredients: this.fb.array([
+    sections:this.fb.array([
       this.fb.group({
-        section: 'Main',
-        ingredients: this.fb.array([])
+        name: 'Main',
+        ingredients: this.fb.array([]),
+        directions: this.fb.array([])
       })
-    ]),
-    directions: this.fb.array([]),
+    ])
   });
 
   difficultyTexts = ['Easy','Intermediate','Expert'];
@@ -79,8 +80,8 @@ export class EditRecipeComponent implements OnInit{
     return this.recipeForm.get('difficulty')?.value ?? 0;
   }
 
-  get directions() {
-    return this.recipeForm.get('directions') as FormArray;
+  get sections() {
+    return this.recipeForm.get('sections') as FormArray;
   }
 
   get dishTypes() {
@@ -98,24 +99,42 @@ export class EditRecipeComponent implements OnInit{
   get labels() {
     return this.recipeForm.get('labels') as FormGroup;
   }
-  
-  get ingredients() {
-    return this.recipeForm.get('ingredients') as FormArray;
-  }
 
   getIngredientsFromSection(section : AbstractControl<any, any>) {
     return section.get('ingredients') as FormArray;
   }
 
-  addSection() {
-    this.ingredients.push(this.fb.group({
-      section: '',
-      ingredients: this.fb.array([])
-    }))
+  getDirectionsFromSection(section : AbstractControl<any, any>) {
+    return section.get('directions') as FormArray;
   }
 
-  addIngredient(section: number, name = '', quantity = 0, unit = '', note = '') {
-    const iArray = this.ingredients.controls[section].get('ingredients') as FormArray;
+  addSection() {
+    this.sections.push(this.fb.group({
+      name: `section-${this.sectionId}`,
+      ingredients: this.fb.array([]),
+      directions: this.fb.array([])
+    }))
+    this.sectionId++;
+  }
+  
+  removeSection(sectionName: string) {
+    const idx = this.sections.controls.findIndex(c => c.get('name')?.value === sectionName);
+    this.sections.removeAt(idx);
+  }
+
+  getSection(sectionName: string) : AbstractControl<any, any> | null {
+    const section = this.sections.controls.filter(c => c.get('name')?.value === sectionName)[0];
+    if(!section) {
+      console.log(`Could not find section with name ${sectionName}`);
+      return null;
+    }
+    return section;
+  }
+
+  addIngredient(sectionName: string, name = '', quantity = 0, unit = '', note = '') {
+    const section = this.getSection(sectionName);
+    if(!section) return;
+    const iArray = this.getIngredientsFromSection(section);
     if(iArray) {
       iArray.push(this.fb.group({
         quantity: quantity,
@@ -126,23 +145,32 @@ export class EditRecipeComponent implements OnInit{
     }
   }
 
-  removeSection(idx: number) {
-    this.ingredients.removeAt(idx);
-  }
-  removeIngredient(sectionIdx: number, ingredientIdx: number) {
-    console.log(sectionIdx, ingredientIdx);
-    const iArray = this.ingredients.controls[sectionIdx].get('ingredients') as FormArray;
+  removeIngredient(sectionName: string, ingredientIdx: number) {
+    console.log(sectionName, ingredientIdx);
+    const section = this.getSection(sectionName);
+    if(!section) return;
+    const iArray = this.getIngredientsFromSection(section);
     if(iArray) {
       iArray.removeAt(ingredientIdx);
     }
     console.log(iArray);
   }
 
-  addDirection(dir: string = '') {
-    this.directions.push(this.fb.control(dir));
+  addDirection(sectionName: string, dir: string = '') {
+    const section = this.getSection(sectionName);
+    if(!section) return;
+    const dArray = this.getDirectionsFromSection(section);
+    if(dArray) {
+      dArray.push(this.fb.control(dir));
+    }
   }
-  removeDirection(i : number) {
-    this.directions.removeAt(i);
+  removeDirection(sectionName: string, i : number) {
+    const section = this.getSection(sectionName);
+    if(!section) return;
+    const dArray = this.getDirectionsFromSection(section);
+    if(dArray) {
+      dArray.removeAt(i);
+    }
   }
 
   constructor(
@@ -183,8 +211,7 @@ export class EditRecipeComponent implements OnInit{
         serving: 1,
         when: [],
         preparationTime: {},
-        ingredients: [],
-        directions: [],
+        sections: [],
         images: [],
         allergens: [],
         labels: []
@@ -218,7 +245,7 @@ export class EditRecipeComponent implements OnInit{
   onSubmit() {
     this.#updateRecipeFromForm();
     console.log(this.recipe);
-    this.addRecipe();
+    // this.addRecipe();
   }
 
   #updateRecipeForm() {
@@ -271,18 +298,19 @@ export class EditRecipeComponent implements OnInit{
         this.recipeForm.get('preparationTime')?.get('total')?.setValue(this.recipe.preparationTime.total);
       }
 
-      for(let i = 0; i < this.recipe.ingredients.length; i++) {
-        const section = this.recipe.ingredients[i];
+      for(let i = 0; i < this.recipe.sections.length; i++) {
+        const section = this.recipe.sections[i];
         if(i > 0)
           this.addSection();
-        this.ingredients.controls[i].get('section')?.setValue(section.section);
+        this.sections.controls[i].get('name')?.setValue(section.name);
+        console.log("name: ", section.name);
+        const sectionName = this.sections.controls[i].get('name')!.value;
         for(let ingredient of section.ingredients) {
-          this.addIngredient(i, ingredient.name, ingredient.quantity, ingredient.unit, ingredient.note);
+          this.addIngredient(sectionName, ingredient.name, ingredient.quantity, ingredient.unit, ingredient.note);
         }
-      }
-
-      for(let dir of this.recipe.directions) {
-        this.addDirection(dir);
+        for(let direction of section.directions) {
+          this.addDirection(sectionName, direction);
+        }
       }
     }
   }
@@ -343,23 +371,8 @@ export class EditRecipeComponent implements OnInit{
       const total = this.recipeForm.get('preparationTime')?.get('total')?.value;
       if(total != null && total != 0) this.recipe.preparationTime.total = total;
 
-      const ingredients : IngredientSection[] = this.ingredients.value;
-      if(ingredients.length > 0) {
-        const ingredientSectionList : IngredientSection[] = [];
-        for(let sect of ingredients) {
-          const ingredientSection: IngredientSection = {
-            section: sect.section,
-            ingredients: [...sect.ingredients.filter(i => i.name != '')]
-          }
-          ingredientSectionList.push(ingredientSection);
-        }
-        this.recipe.ingredients = ingredientSectionList;
-      }
-
-      const dirs = this.directions.value;
-      if(dirs.length > 0) {
-        this.recipe.directions = dirs;
-      }
+      const sections : Section[] = this.sections.value;
+      this.recipe.sections = sections;
     }
   }
 }

@@ -5,9 +5,10 @@ export interface Ingredient {
     note? : string
 }
 
-export interface IngredientSection {
-    section?: string,
-    ingredients: Ingredient[]
+export interface Section {
+    name?: string,
+    ingredients: Ingredient[],
+    directions: string[]
 }
 
 export interface PreparationTime {
@@ -55,9 +56,9 @@ export interface Recipe {
     serving: number,
     when: When[],
     preparationTime: PreparationTime,
-    ingredients: {section?: string, ingredients: Ingredient[]}[],
-    directions: string[],
+    sections: Section[],
     images: string[],
+    labels: Label[],
     allergens: Allergen[],
-    labels: Label[]
+    url?: string
 }
