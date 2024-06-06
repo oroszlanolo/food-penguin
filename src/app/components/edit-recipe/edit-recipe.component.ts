@@ -8,13 +8,14 @@ import { ImageService } from 'src/app/services/image.service';
 import { DishTypePipe } from '../../pipes/dish-type.pipe';
 import { NgIf, NgClass, NgFor, TitleCasePipe } from '@angular/common';
 import { UserService } from 'src/app/services/user.service';
+import { CheckCardComponent } from "../units/check-card/check-card.component";
 
 @Component({
     selector: 'app-edit-recipe',
     templateUrl: './edit-recipe.component.html',
     styleUrls: ['./edit-recipe.component.css'],
     standalone: true,
-    imports: [NgIf, FormsModule, ReactiveFormsModule, NgClass, NgFor, TitleCasePipe, DishTypePipe]
+    imports: [NgIf, FormsModule, ReactiveFormsModule, NgClass, NgFor, TitleCasePipe, DishTypePipe, CheckCardComponent]
 })
 export class EditRecipeComponent implements OnInit{
   recipeServerUrl = environment.serverPath;
@@ -31,14 +32,14 @@ export class EditRecipeComponent implements OnInit{
     serving: [0, Validators.required],
     difficulty: 0,
     dishType: this.fb.group({
+      main_dish: false,
+      soup: false,
+      dessert: false,
+      garnish: false,
+      drink: false,
       cold_appetizer: false,
       warm_appetizer: false,
       amuse_bouche: false,
-      dessert: false,
-      garnish: false,
-      main_dish: false,
-      soup: false,
-      drink: false,
       other_course: false,
     }),
     when: this.fb.group({
@@ -334,6 +335,7 @@ export class EditRecipeComponent implements OnInit{
       if(dishTypeArray.length > 0) {
         this.recipe.dishType = dishTypeArray;
       }
+      console.log(this.allergens);
       const allergenArray : Allergen[] = [];
       for(let allergen of Object.keys(this.allergens.controls)) {
         if(this.allergens.get(allergen)?.value) {

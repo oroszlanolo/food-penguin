@@ -28,45 +28,27 @@
         <div formGroupName="dishType" class="flex flex-row flex-wrap items-center gap-3 mb-5">
             <h2 class="shrink-0 text-secondary">Dish Type:</h2>
             @for(dType of object.keys(dishTypes.controls); track dType) {
-                <div>
-                    <label class="cursor-pointer label">
-                        <span class="label-text mr-3">{{dType | dishType}}</span>
-                        <input formControlName="{{dType}}" type="checkbox" class="checkbox checkbox-secondary" />
-                    </label>
-                </div>
+                <app-check-card [formControlName]="dType" [label]="dType | dishType"></app-check-card>
             }
         </div>
         <div formGroupName="when" class="flex flex-row flex-wrap items-center gap-3 mb-5">
             <h2 class="shrink-0 text-secondary">When:</h2>
             @for(when of object.keys(whens.controls); track when) {
-                <div >
-                    <label class="cursor-pointer label">
-                        <span class="label-text mr-3">{{when | titlecase}}</span>
-                        <input formControlName="{{when}}" type="checkbox" class="checkbox checkbox-secondary" />
-                    </label>
-                </div>
+                <app-check-card [formControlName]="when" [label]="when"></app-check-card>
             }
         </div>
         <div formGroupName="allergens" class="flex flex-row flex-wrap items-center gap-3 mb-5">
             <h2 class="shrink-0 text-secondary">Allergens:</h2>
             @for(allergen of object.keys(allergens.controls); track allergen) {
                 <div>
-                    <label class="cursor-pointer label">
-                        <span class="label-text mr-3">{{allergen | titlecase}}</span>
-                        <input formControlName="{{allergen}}" type="checkbox" class="checkbox checkbox-secondary" />
-                    </label>
+                    <app-check-card [formControlName]="allergen" [label]="allergen"></app-check-card>
                 </div>
             }
         </div>
         <div formGroupName="labels" class="flex flex-row flex-wrap items-center gap-3 mb-5">
             <h2 class="shrink-0 text-secondary">Labels:</h2>
             @for(label of object.keys(labels.controls); track label) {
-                <div>
-                    <label class="cursor-pointer label">
-                        <span class="label-text mr-3">{{label | titlecase}}</span>
-                        <input formControlName="{{label}}" type="checkbox" class="checkbox checkbox-secondary" />
-                    </label>
-                </div>
+                <app-check-card [formControlName]="label" [label]="label"></app-check-card>
             }
         </div>
         <h2 class="text-secondary">Preparation Time</h2>
