@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FoodService } from '../../services/food.service';
-import { Allergen, Difficulty, DishType, Ingredient, Section, Label, Recipe, When } from 'src/recipe';
+import { Allergen, Difficulty, DishType, Ingredient, Section, Label, Recipe, When, getDefaultRecipe } from 'src/recipe';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { ImageService } from 'src/app/services/image.service';
@@ -10,6 +10,7 @@ import { NgIf, NgClass, NgFor, TitleCasePipe } from '@angular/common';
 import { UserService } from 'src/app/services/user.service';
 import { CheckCardComponent } from "../units/check-card/check-card.component";
 
+type Tab = 'overview' | 'ingredients' | 'directions';
 @Component({
     selector: 'app-edit-recipe',
     templateUrl: './edit-recipe.component.html',
@@ -23,45 +24,33 @@ export class EditRecipeComponent implements OnInit{
   id = '';
   recipe? : Recipe;
   object = Object;
+  activeTab : Tab = 'overview'
+  sectionId = 2;
+
+  constructor(
+    private router : Router,
+    private route : ActivatedRoute,
+    private foodService : FoodService,
+    private imgService: ImageService,
+    private fb: FormBuilder,
+    private user: UserService) {}
+
   get loggedIn(){
     return this.user.loggedIn;
   }
-  sectionId = 2;
   recipeForm = this.fb.group({
     name: ['', Validators.required],
     serving: [0, Validators.required],
     difficulty: 0,
-    dishType: this.fb.group({
-      main_dish: false,
-      soup: false,
-      dessert: false,
-      garnish: false,
-      drink: false,
-      cold_appetizer: false,
-      warm_appetizer: false,
-      amuse_bouche: false,
-      other_course: false,
-    }),
-    when: this.fb.group({
-      breakfast: false,
-      lunch: false,
-      dinner: false,
-      snack: false,
-      always: false
-    }),
+    dishType: this.fb.group({ main_dish: false, soup: false, dessert: false, garnish: false, drink: false, cold_appetizer: false, warm_appetizer: false, amuse_bouche: false, other_course: false, }),
+    when: this.fb.group({ breakfast: false, lunch: false, dinner: false, snack: false, always: false }),
     preparationTime: this.fb.group({
       preparation: 0,
       owen: 0,
       cooking: 0,
       total: [{value: 0, disabled: true}],
     }),
-    allergens: this.fb.group({
-      "sugar-free": false,
-      "lactose-free": false,
-      "dairy-free": false,
-      "egg-free": false,
-      "gluten-free": false,
-    }),
+    allergens: this.fb.group({ "gluten-free": false, "sugar-free": false, "lactose-free": false, "dairy-free": false, "egg-free": false, }),
     labels: this.fb.group({
       cheap: false,
       vegan: false
@@ -80,23 +69,18 @@ export class EditRecipeComponent implements OnInit{
   get difficulty() {
     return this.recipeForm.get('difficulty')?.value ?? 0;
   }
-
   get sections() {
     return this.recipeForm.get('sections') as FormArray;
   }
-
   get dishTypes() {
     return this.recipeForm.get('dishType') as FormGroup;
   }
-  
   get whens() {
     return this.recipeForm.get('when') as FormGroup;
   }
-
   get allergens() {
     return this.recipeForm.get('allergens') as FormGroup;
   }
-
   get labels() {
     return this.recipeForm.get('labels') as FormGroup;
   }
@@ -174,14 +158,6 @@ export class EditRecipeComponent implements OnInit{
     }
   }
 
-  constructor(
-    private router : Router,
-    private route : ActivatedRoute,
-    private foodService : FoodService,
-    private imgService: ImageService,
-    private fb: FormBuilder,
-    private user: UserService) {}
-
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id') ?? '';
     console.log(this.id);
@@ -205,18 +181,7 @@ export class EditRecipeComponent implements OnInit{
     }
 
     if(!this.recipe) {
-      this.recipe = {
-        name: '',
-        difficulty: 'easy',
-        dishType: [],
-        serving: 1,
-        when: [],
-        preparationTime: {},
-        sections: [],
-        images: [],
-        allergens: [],
-        labels: []
-      }
+      this.recipe = getDefaultRecipe();
       this.#updateRecipeForm();
     }
   }
@@ -248,6 +213,7 @@ export class EditRecipeComponent implements OnInit{
     console.log(this.recipe);
     // this.addRecipe();
   }
+
 
   #updateRecipeForm() {
     if(this.recipe) {

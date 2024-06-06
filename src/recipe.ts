@@ -60,5 +60,21 @@ export interface Recipe {
     images: string[],
     labels: Label[],
     allergens: Allergen[],
-    url?: string
+    url?: string,
+    temperature?: number
+}
+
+export function getDefaultRecipe() : Recipe {
+    return {
+        name: '',
+        difficulty: 'easy',
+        dishType: [],
+        serving: 1,
+        when: [],
+        preparationTime: {},
+        sections: [],
+        images: [],
+        allergens: [],
+        labels: []
+      };
 }
