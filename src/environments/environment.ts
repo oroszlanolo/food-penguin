@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    serverPath: "https://penguin.oroszlanolo.hu:80/"
+    serverPath: "https://penguin.oroszlanolo.hu/"
 };
