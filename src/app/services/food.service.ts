@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import { Recipe } from 'src/recipe';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UserService } from './user.service';
@@ -19,11 +19,12 @@ export class FoodService {
     return this.http.get<Recipe[]>(this.recipeServerUrl + '/recipes');
   }
 
-  getRecipe(id: string) : Observable<Recipe> {
-    return this.http.get<Recipe>(this.recipeServerUrl + '/recipe?id=' + id);
-  }
   searchForRecipe(text: string) : Observable<Recipe[]> {
     return this.http.get<Recipe[]>(this.recipeServerUrl + '/recipes/search?text=' + text);
+  }
+
+  getRecipe(id: string) : Observable<Recipe> {
+    return this.http.get<Recipe>(this.recipeServerUrl + '/recipe?id=' + id);
   }
 
   scrapeRecipe(url: string) : Observable<Recipe> {
@@ -68,7 +69,20 @@ export class FoodService {
         'Authorization':  this.user.accessToken
       })
     };
-    console.log(`id: ${recipe._id}`);
     return this.http.put<Recipe>(this.recipeServerUrl + '/recipe', {recipe: JSON.stringify(recipe)}, httpOptions);
+  }
+
+  deleteRecipe(id: string) : Observable<boolean> {
+    if(!this.user.accessToken) {
+      return of(false);
+    }
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization':  this.user.accessToken
+      })
+    };
+    return this.http.delete<{success: boolean}>(this.recipeServerUrl + '/recipe?id=' + id, httpOptions).
+    pipe(map(res => res.success));
   }
 }

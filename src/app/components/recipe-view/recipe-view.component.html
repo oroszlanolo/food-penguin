@@ -34,7 +34,7 @@
             <button class="btn btn-circle btn-ghost" (click)="edit()">
                 <span class="material-symbols-outlined">edit</span>
             </button>
-            <button class="btn btn-circle btn-ghost !bg-transparent" disabled="true">
+            <button class="btn btn-circle btn-ghost" [class.!bg-transparent]="!loggedIn" [disabled]="!loggedIn" (click)="delete()">
                 <span class="material-symbols-outlined">delete</span>
             </button>
         </div>

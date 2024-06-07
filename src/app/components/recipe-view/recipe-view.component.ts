@@ -4,6 +4,7 @@ import { Location, NgIf, NgFor, NgClass, DecimalPipe, TitleCasePipe } from '@ang
 import { Recipe } from 'src/recipe';
 import { FoodService } from '../../services/food.service';
 import { environment } from 'src/environments/environment';
+import { UserService } from 'src/app/services/user.service';
 
 
 @Component({
@@ -19,11 +20,17 @@ export class RecipeViewComponent implements OnInit {
   servingRation = 1;
   selectedDirection = 0;
   recipeServerUrl = environment.serverPath;
+
+  get loggedIn() {
+    return this.user.loggedIn;
+  }
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private location: Location,
-    private foodService : FoodService
+    private foodService : FoodService,
+    private user: UserService
   ) {}
 
   ngOnInit(): void {
@@ -62,5 +69,20 @@ export class RecipeViewComponent implements OnInit {
 
   edit() {
     this.router.navigate(['/edit'], {state: {recipe: this.recipe}});
+  }
+
+  delete() {
+    if(this.recipe?._id) {
+      this.foodService.deleteRecipe(this.recipe._id).subscribe({
+        next: (success) => {
+          if(success) {
+            this.router.navigate(['/recipes']);
+          } else {
+            console.log('Could not delete recipe');
+          }
+        },
+        error: err => console.log(err)
+      });
+    }
   }
 }
