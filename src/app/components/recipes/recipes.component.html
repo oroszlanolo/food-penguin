@@ -7,7 +7,7 @@
                 @if(recipe.images.length > 0) {
                     <figure class="h-60"><img class="min-h-full object-cover" src="{{recipe.images[0].includes('http') ? recipe.images[0] : (recipeServerUrl + 'api/image?id=' + recipe.images[0] + '&size=medium')}}" alt="{{recipe.name}}" /></figure>
                 } @else {
-                    <figure class="h-60"><img class="min-h-full object-cover" src="/assets/penguin-fish.jpg" alt="{{recipe.name}}" /></figure>
+                    <figure class="h-60"><img class="min-h-full object-cover" src="assets/penguin-fish.jpg" alt="{{recipe.name}}" /></figure>
                 }
                 <div class="card-body bg-slate-50">
                     <h2 class="card-title text-2xl">

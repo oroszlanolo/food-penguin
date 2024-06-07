@@ -5,7 +5,7 @@
         @if(recipe.images.length > 0) {
             <img class="w-full mt-4" src="{{recipe.images[0].includes('http') ? recipe.images[0] : (recipeServerUrl + 'api/image?id=' + recipe.images[0] + '&size=medium')}}" alt="{{recipe.name}} image">
         } @else {
-            <img class="w-1/2 m-auto mt-4" src="/assets/penguin-klos-white.png" alt="{{recipe.name}} image">
+            <img class="w-1/2 m-auto mt-4" src="assets/penguin-klos-white.png" alt="{{recipe.name}} image">
         }
         <div class="flex flex-row items-center justify-evenly mt-6">
             <div class="flex flex-row items-center gap-2">
