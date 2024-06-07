@@ -6,6 +6,9 @@
             <p class="text-xl">You can edit the recipe before adding it to FoodPenguin.</p>
         </div>
     }
+    @if (!loggedIn) {
+        <p class="text-warning text-lg">You need to be logged in to save changes</p>
+    }
     <form (ngSubmit)="onSubmit()" [formGroup]="recipeForm" class="p-5">
         <div class="flex flex-row">
             <div class="flex-1">
