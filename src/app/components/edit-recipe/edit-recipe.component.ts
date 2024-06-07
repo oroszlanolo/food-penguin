@@ -190,7 +190,10 @@ export class EditRecipeComponent implements OnInit{
     console.log(this.recipe);
     if(this.recipe) {
       this.foodService.addOrUpdateRecipe(this.recipe).subscribe({
-        complete: () => this.router.navigate([`/recipe/${this.recipe?._id}`]),
+        next: (id) => {
+          console.log('id', id);
+          this.router.navigate([`/recipe/${id}`]);
+        },
         error: err => console.log(err)
       });
     }
@@ -270,7 +273,6 @@ export class EditRecipeComponent implements OnInit{
         if(i > 0)
           this.addSection();
         this.sections.controls[i].get('name')?.setValue(section.name);
-        console.log("name: ", section.name);
         const sectionName = this.sections.controls[i].get('name')!.value;
         for(let ingredient of section.ingredients) {
           this.addIngredient(sectionName, ingredient.name, ingredient.quantity, ingredient.unit, ingredient.note);

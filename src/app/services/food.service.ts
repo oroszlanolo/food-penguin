@@ -38,7 +38,7 @@ export class FoodService {
     });
   }
 
-  addOrUpdateRecipe(recipe: Recipe) : Observable<any> {
+  addOrUpdateRecipe(recipe: Recipe) : Observable<string> {
     if(recipe._id) {
       return this.updateRecipe(recipe);
     } else {
@@ -46,7 +46,7 @@ export class FoodService {
     }
   }
 
-  addRecipe(recipe: Recipe) : Observable<any> {
+  addRecipe(recipe: Recipe) : Observable<string> {
     if(!this.user.accessToken) {
       return of('');
     }
@@ -56,10 +56,11 @@ export class FoodService {
         'Authorization':  this.user.accessToken
       })
     };
-    return this.http.post<Recipe>(this.recipeServerUrl + '/recipe', {recipe: JSON.stringify(recipe)}, httpOptions);
+    return this.http.post<{id: string}>(this.recipeServerUrl + '/recipe', {recipe: JSON.stringify(recipe)}, httpOptions)
+    .pipe(map(r => r.id));
   }
 
-  updateRecipe(recipe: Recipe) : Observable<any> {
+  updateRecipe(recipe: Recipe) : Observable<string> {
     if(!this.user.accessToken) {
       return of('');
     }
@@ -69,7 +70,8 @@ export class FoodService {
         'Authorization':  this.user.accessToken
       })
     };
-    return this.http.put<Recipe>(this.recipeServerUrl + '/recipe', {recipe: JSON.stringify(recipe)}, httpOptions);
+    return this.http.put<{id: string}>(this.recipeServerUrl + '/recipe', {recipe: JSON.stringify(recipe)}, httpOptions)
+    .pipe(map(r => r.id));
   }
 
   deleteRecipe(id: string) : Observable<boolean> {
