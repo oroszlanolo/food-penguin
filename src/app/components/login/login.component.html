@@ -1,8 +1,11 @@
 @if(loggedIn) {
-     <div class="avatar">
-          <div class="w-10 rounded-full">
-               <img [src]="user?.picture" />
-          </div>
+     <div class="relative">
+          <button class="avatar" (click)="toggleLogoutBtn()">
+               <div class="w-10 rounded-full">
+                    <img [src]="user?.picture" />
+               </div>
+          </button>
+          <button class="btn absolute bottom-0 right-0 !translate-y-full shadow-md" [class.hidden]="!showLogoutBtn" (click)="logout()">Logout</button>
      </div>
 } @else {
      <div id="google-btn"></div>

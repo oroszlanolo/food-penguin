@@ -41,6 +41,11 @@ export class UserService {
         // google.accounts.id.prompt();
       }
   }
+
+  logout() {
+    sessionStorage.removeItem('accessToken');
+  }
+
   private decodeJWTToken(token: string) : TokenPayload {
     return JSON.parse(atob(token.split(".")[1]))
   }

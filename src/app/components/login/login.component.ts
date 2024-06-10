@@ -17,6 +17,7 @@ export class LoginComponent implements OnInit {
     return this.userService.user;
   }
   loggedIn = this.userService.loggedIn;
+  showLogoutBtn = false;
 
   constructor(private userService: UserService, private router: Router ) {}
 
@@ -29,6 +30,15 @@ export class LoginComponent implements OnInit {
     this.userService.loginEvt.subscribe(() => {
       location.reload();
     });
+  }
+
+  toggleLogoutBtn() {
+    this.showLogoutBtn = !this.showLogoutBtn;
+  }
+
+  logout() {
+    this.userService.logout();
+    location.reload();
   }
 
   private createLoginBtn() {
