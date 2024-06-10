@@ -1,11 +1,15 @@
 declare var google: any;
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
+import { map } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { TokenPayload, User } from 'src/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
+  serverLoginUrl = `${environment.serverPath}api/login`;
 
   googleReadyEvt = new EventEmitter<void>();
   loginEvt = new EventEmitter<void>();
@@ -17,9 +21,7 @@ export class UserService {
     return this.user !== undefined;
   }
 
-  private localStorageId = 'user';
-
-  constructor() {
+  constructor(private http: HttpClient) {
       const accessToken = sessionStorage.getItem("accessToken");
       if(accessToken) {
         this.accessToken = accessToken;
@@ -44,14 +46,27 @@ export class UserService {
   }
 
   private handleOauthResponse(response: any){
-    console.log(response);
-    this.accessToken = response.credential;
-    const responsePayload = this.decodeJWTToken(response.credential)
-    console.log(responsePayload);
-    console.log(JSON.stringify(responsePayload));
-    this.user = this.convertToUser(responsePayload);
-    sessionStorage.setItem("accessToken", response.credential);
-    this.loginEvt.emit();
+    // console.log(response);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization':  response.credential
+      })
+    };
+    return this.http.get(this.serverLoginUrl, httpOptions).
+    subscribe({
+      next: () => {
+        this.accessToken = response.credential;
+        const responsePayload = this.decodeJWTToken(response.credential)
+        console.log(responsePayload);
+        console.log(JSON.stringify(responsePayload));
+        this.user = this.convertToUser(responsePayload);
+        sessionStorage.setItem("accessToken", response.credential);
+        this.loginEvt.emit();
+      },
+      error: () => {
+        console.log("error logging in");
+      }
+    })
   }
 
   private convertToUser(usr: TokenPayload) : User {
