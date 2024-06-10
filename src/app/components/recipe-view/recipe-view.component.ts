@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, booleanAttribute } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location, NgIf, NgFor, NgClass, DecimalPipe, TitleCasePipe } from '@angular/common';
-import { Recipe } from 'src/recipe';
+import { Ingredient, Recipe } from 'src/recipe';
 import { FoodService } from '../../services/food.service';
 import { environment } from 'src/environments/environment';
 import { UserService } from 'src/app/services/user.service';
+import { ingredientNormalizerMult } from 'src/utils/ingredient_helper';
 
 
 @Component({
@@ -20,6 +21,16 @@ export class RecipeViewComponent implements OnInit {
   servingRation = 1;
   selectedDirection = 0;
   recipeServerUrl = environment.serverPath;
+
+  get selectedIngredientNum() {
+    return this.ingredientSelection.reduce((prev, curr) => prev + curr.reduce((prev, curr) => prev + (curr ? 1 : 0), 0), 0); 
+  }
+
+  get hasSelectedIngredient() {
+    return this.ingredientSelection.reduce((prev, curr) => prev || curr.reduce((prev, curr) => curr || prev, false), false); 
+  }
+
+  ingredientSelection : boolean[][] = [];
 
   get loggedIn() {
     return this.user.loggedIn;
@@ -43,6 +54,10 @@ export class RecipeViewComponent implements OnInit {
       this.foodService.getRecipe(id).subscribe(recipe => {
         this.recipe = recipe;
         this.serving = recipe.serving;
+        for(let section of this.recipe?.sections ?? []) {
+          const iSection = Array.from(new Array(section.ingredients.length), () => false);
+          this.ingredientSelection.push(iSection);
+        }
       });
     }
   }
@@ -56,11 +71,51 @@ export class RecipeViewComponent implements OnInit {
     }
   }
 
+  setServingRation(n: number) {
+    if(this.serving && this.recipe?.serving) {
+      this.servingRation = n;
+      this.serving = this.recipe?.serving * this.servingRation;
+    }
+  }
+
   updateServing(diff : number) {
     if(this.serving && this.recipe?.serving) {
       this.serving += diff;
       this.servingRation = this.serving / this.recipe?.serving;
     }
+  }
+  resetServing() {
+    this.setServingRation(1);
+  }
+
+  toggleIngredient(sectionNum: number, ingredientNum: number) {
+    this.ingredientSelection[sectionNum][ingredientNum] = !this.ingredientSelection[sectionNum][ingredientNum];
+  }
+  getIngredient(sectionNum: number, ingredientNum: number) : Ingredient | undefined {
+    return this.recipe?.sections[sectionNum].ingredients[ingredientNum];
+  }
+  getSelectedIngredients() : Ingredient[] {
+    const ingredients : Ingredient[] = [];
+    for(let i = 0; i < this.ingredientSelection.length; i++) {
+      for(let j = 0; j < this.ingredientSelection[i].length; j++) {
+        if(this.ingredientSelection[i][j]) {
+          const ingredient = this.getIngredient(i, j);
+          if(ingredient) {
+            ingredients.push(ingredient);
+          }
+        }
+      }
+    }
+    return ingredients;
+  }
+  normalize() {
+    const selectedIngredients = this.getSelectedIngredients();
+    if(selectedIngredients.length == 0) {
+      return;
+    }
+    const baseIngredient : Ingredient = this.getSelectedIngredients()[0];
+    const mult = ingredientNormalizerMult(baseIngredient);
+    this.setServingRation(mult);
   }
 
   selectDirection(idx : number) {
