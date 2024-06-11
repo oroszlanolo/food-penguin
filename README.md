@@ -2,6 +2,20 @@
 
 This project is a home recipe book and cooking assistant. You can store your own recipes, or recipes from the web. In addition to viewing the recipes, you can get random recipe suggestions, recipes that you have not used for a long time, recipes based on the ingredients in your fridge, or even plan a good menu for the entire week.
 
+## How it is working
+
+The application is built in **Angular**, using **Tailwindcss** CSS framework and the **daisyUI** component library.
+The app communicates with a **Nodejs** REST API. The backend is responsible for:
+* validating logins
+* storing and managing recipes
+* storing images
+* scraping recipes from various websites
+The backend is running on my home server in a **docker** container. **MongoDB** is used to store recipe data.
+
+Most of APIs are available without authentication, but some of them are only enabled for logged in users. (e.g. deleting or updating recipes).
+
+The app uses **google oauth**, and only the users enabled on server-side can log into the app. (The app is for internal usage so only my family can log in currently).
+
 
 ## Features
 
