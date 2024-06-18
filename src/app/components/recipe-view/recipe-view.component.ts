@@ -20,7 +20,10 @@ export class RecipeViewComponent implements OnInit {
   recipe? : Recipe;
   serving? : number;
   servingRation = 1;
-  selectedDirection = 0;
+  selectedDirection = {
+    section: 0,
+    direction: 0
+  };
   recipeServerUrl = environment.serverPath;
   showImages = false;
 
@@ -120,8 +123,9 @@ export class RecipeViewComponent implements OnInit {
     this.setServingRation(mult);
   }
 
-  selectDirection(idx : number) {
-    this.selectedDirection = idx;
+  selectDirection(section: number, idx : number) {
+    this.selectedDirection.section = section;
+    this.selectedDirection.direction = idx;
   }
 
   edit() {

@@ -90,14 +90,14 @@
     </div>
     <div class="px-2">
         <h2 class="text-2xl font-medium my-2 text-accent">Directions</h2>
-            @for(section of recipe.sections; track section) {
+            @for(section of recipe.sections; track section; let i = $index) {
                 @if(section.name) {
                     <p class="text-xl font-medium" >{{section.name}}</p>
                 }
-                @for(step of section.directions; track step; let i = $index){
-                    <div [ngClass]="i == selectedDirection ? 'bg-base-200' : 'bg-base-100'"
+                @for(step of section.directions; track step; let j = $index){
+                    <div [ngClass]="i == selectedDirection.section && j == selectedDirection.direction ? 'bg-base-200' : 'bg-base-100'"
                     class="flex flex-row font-medium p-2 my-2 rounded-md cursor-pointer hover:bg-base-200"
-                    (click)="selectDirection(i)">
+                    (click)="selectDirection(i, j)">
                     <div class="avatar placeholder mr-4">
                         <div class="bg-neutral-500 rounded-full w-8 h-8">
                             <span class="text-lg font-bold text-white">{{i + 1}}</span>
