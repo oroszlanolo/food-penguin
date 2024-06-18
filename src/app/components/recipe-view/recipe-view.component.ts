@@ -6,6 +6,7 @@ import { FoodService } from '../../services/food.service';
 import { environment } from 'src/environments/environment';
 import { UserService } from 'src/app/services/user.service';
 import { ingredientNormalizerMult } from 'src/utils/ingredient_helper';
+import { ImageViewComponent } from "../image-view/image-view.component";
 
 
 @Component({
@@ -13,7 +14,7 @@ import { ingredientNormalizerMult } from 'src/utils/ingredient_helper';
     templateUrl: './recipe-view.component.html',
     styleUrls: ['./recipe-view.component.css'],
     standalone: true,
-    imports: [NgIf, NgFor, NgClass, DecimalPipe, TitleCasePipe]
+    imports: [NgIf, NgFor, NgClass, DecimalPipe, TitleCasePipe, ImageViewComponent]
 })
 export class RecipeViewComponent implements OnInit {
   recipe? : Recipe;
@@ -21,6 +22,7 @@ export class RecipeViewComponent implements OnInit {
   servingRation = 1;
   selectedDirection = 0;
   recipeServerUrl = environment.serverPath;
+  showImages = false;
 
   get selectedIngredientNum() {
     return this.ingredientSelection.reduce((prev, curr) => prev + curr.reduce((prev, curr) => prev + (curr ? 1 : 0), 0), 0); 
@@ -139,5 +141,11 @@ export class RecipeViewComponent implements OnInit {
         error: err => console.log(err)
       });
     }
+  }
+  viewImages() {
+    this.showImages = true;
+  }
+  closeImages() {
+    this.showImages = false;
   }
 }
