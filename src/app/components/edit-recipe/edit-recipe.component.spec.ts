@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { EditRecipeComponent } from './edit-recipe.component';
+import { provideRouter } from '@angular/router';
 
 describe('EditRecipeComponent', () => {
   let component: EditRecipeComponent;
@@ -8,7 +10,12 @@ describe('EditRecipeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [EditRecipeComponent]
+    imports: [
+      HttpClientTestingModule,
+      EditRecipeComponent],
+    providers: [
+      provideRouter([])
+    ]
 })
     .compileComponents();
 

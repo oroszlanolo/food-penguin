@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { ShoppingListComponent } from './shopping-list.component';
 
@@ -8,7 +9,10 @@ describe('ShoppingListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [ShoppingListComponent]
+    imports: [
+      HttpClientTestingModule,
+      ShoppingListComponent
+    ]
 })
     .compileComponents();
 

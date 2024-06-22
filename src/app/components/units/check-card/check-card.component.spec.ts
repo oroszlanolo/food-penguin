@@ -14,6 +14,7 @@ describe('CheckCardComponent', () => {
     
     fixture = TestBed.createComponent(CheckCardComponent);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('label', 'asd');
     fixture.detectChanges();
   });
 

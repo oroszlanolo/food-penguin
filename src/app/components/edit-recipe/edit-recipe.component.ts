@@ -162,11 +162,11 @@ export class EditRecipeComponent implements OnInit{
     this.id = this.route.snapshot.paramMap.get('id') ?? '';
     console.log(this.id);
     console.log(this.object.keys(this.dishTypes));
-    if(window.history.state.recipe) {
+    if(window.history.state?.recipe) {
       this.recipe = window.history.state.recipe;
       this.#updateRecipeForm();
     }
-    if(window.history.state.url) {
+    if(window.history.state?.url) {
       this.url = window.history.state.url;
     }
 

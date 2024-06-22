@@ -14,6 +14,7 @@ describe('ImageViewComponent', () => {
     
     fixture = TestBed.createComponent(ImageViewComponent);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('images', ['a']);
     fixture.detectChanges();
   });
 
