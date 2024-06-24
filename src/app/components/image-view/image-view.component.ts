@@ -1,4 +1,4 @@
-import { Component, computed, input, numberAttribute, output } from '@angular/core';
+import { Component, computed, input, numberAttribute, output, signal } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -12,36 +12,29 @@ export class ImageViewComponent {
   recipeServerUrl = environment.serverPath;
   images = input.required<string[]>();
   closeImageView = output<void>();
-  selectedIdx = 0;
-  get image() {
-    return this.images()[this.selectedIdx];
-  }
+  selectedIdx = signal(0);
+  image = computed(() => this.images()[this.selectedIdx()]);
   imageCount = computed(() => this.images().length);
-  get hasPrev() {
-    return this.selectedIdx > 0;
-  }
-  get hasNext() {
-    return this.selectedIdx < this.imageCount() - 1;
-  }
+  hasPrev = computed(() => this.selectedIdx() > 0);
+  hasNext = computed(() => this.selectedIdx() < this.images().length - 1);
 
   getImgString(img: string, full = false) {
     return `${this.recipeServerUrl}api/image?id=${img}&size=${full ? 'large' : 'small'}`;
   }
 
   next() {
-    if(this.hasNext) {
-      this.selectedIdx++;
+    if(this.hasNext()) {
+      this.selectedIdx.update(i => i + 1);
     }
   }
   prev() {
-    if(this.hasPrev) {
-      this.selectedIdx--;
+    if(this.hasPrev()) {
+      this.selectedIdx.update(i => i - 1);
     }
   }
   changeTo(idx: number) {
     if(idx >= 0 && idx < this.imageCount()) {
-      this.selectedIdx = idx;
-      console.log(idx);
+      this.selectedIdx.set(idx);
     }
   }
   close() {
