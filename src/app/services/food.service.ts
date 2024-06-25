@@ -5,6 +5,18 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UserService } from './user.service';
 import { environment } from 'src/environments/environment';
 
+interface PaginationResult {
+  success: boolean,
+  recipes: {
+    metadata: {
+      totalCount: number,
+      page: number,
+      pageSize: number,
+      totalPages: number
+    },
+    data: Recipe[]
+  }
+};
 @Injectable({
   providedIn: 'root'
 })
@@ -15,8 +27,9 @@ export class FoodService {
     private http: HttpClient,
     ) { }
 
-  getRecipes() : Observable<Recipe[]> {
-    return this.http.get<Recipe[]>(this.recipeServerUrl + '/recipes');
+  getRecipes(page: number, pageSize = 10) : Observable<PaginationResult> {
+    return this.http.get<PaginationResult>(
+      `${this.recipeServerUrl}/recipes?page=${page}&pageSize=${pageSize}`);
   }
 
   searchForRecipe(text: string) : Observable<Recipe[]> {

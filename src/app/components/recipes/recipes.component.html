@@ -1,7 +1,7 @@
 <div class="flex flex-col gap-5 align-middle">
     <app-recipe-search class="m-auto" (search)="onSearch($event)" ></app-recipe-search>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-7 m-4">
-        @for(recipe of recipes; track recipe._id){
+        @for(recipe of recipes(); track recipe._id){
             <a href="recipe/{{recipe._id}}"
             class="card max-w-full bg-base-100 drop-shadow-xl overflow-hidden hover:scale-105 transition-transform cursor-pointer">
                 @if(recipe.images.length > 0) {
@@ -27,4 +27,17 @@
             </a>
         }
     </div>
+    @if(totalPages() !== 0) {
+        <div class="flex flex-row items-center justify-center gap-2 mb-5">
+            <button class="btn btn-ghost disabled:bg-transparent"
+                (click)="prev()" [disabled]="!hasPrev()">
+                <span class="material-symbols-outlined">chevron_left</span>
+            </button>
+            <p class="text-xl">{{page()}} / {{totalPages()}}</p>
+            <button class="btn btn-ghost disabled:bg-transparent" 
+                (click)="next()" [disabled]="!hasNext()">
+                <span class="material-symbols-outlined">chevron_right</span>
+            </button>
+        </div>
+    }
 </div>
