@@ -5,6 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UserService } from './user.service';
 import { environment } from 'src/environments/environment';
 
+export type HomeType = 'random' | 'latest' | 'popular' | 'unpopular';
 interface PaginationResult {
   success: boolean,
   recipes: {
@@ -32,8 +33,8 @@ export class FoodService {
       `${this.recipeServerUrl}/recipes?page=${page}&pageSize=${pageSize}`);
   }
 
-  searchForRecipe(text: string) : Observable<Recipe[]> {
-    return this.http.get<Recipe[]>(this.recipeServerUrl + '/recipes/search?text=' + text);
+  searchForRecipe(text: string) : Observable<PaginationResult> {
+    return this.http.get<PaginationResult>(this.recipeServerUrl + '/recipes?name=' + text);
   }
 
   getRecipe(id: string) : Observable<Recipe> {
@@ -99,5 +100,11 @@ export class FoodService {
     };
     return this.http.delete<{success: boolean}>(this.recipeServerUrl + '/recipe?id=' + id, httpOptions).
     pipe(map(res => res.success));
+  }
+
+  // home functions
+  
+  homeRecipes(homeType: HomeType = 'random') : Observable<PaginationResult> {
+    return this.http.get<PaginationResult>(this.recipeServerUrl + '/recipes/' + homeType);
   }
 }

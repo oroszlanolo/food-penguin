@@ -4,13 +4,14 @@ import { Recipe } from 'src/recipe';
 import { environment } from 'src/environments/environment';
 import { NgFor, NgIf, TitleCasePipe, ViewportScroller } from '@angular/common';
 import { RecipeSearchComponent } from '../recipe-search/recipe-search.component';
+import { RecipeCardComponent } from "../shared/recipe-card/recipe-card.component";
 
 @Component({
     selector: 'app-recipes',
     templateUrl: './recipes.component.html',
     styleUrls: ['./recipes.component.css'],
     standalone: true,
-    imports: [RecipeSearchComponent, NgFor, NgIf, TitleCasePipe]
+    imports: [RecipeSearchComponent, NgFor, NgIf, TitleCasePipe, RecipeCardComponent]
 })
 export class RecipesComponent implements OnInit{
   recipeServerUrl = environment.serverPath;
@@ -27,7 +28,11 @@ export class RecipesComponent implements OnInit{
     this.updateRecipes();
   }
   onSearch(searchText: string) {
-    this.foodService.searchForRecipe(searchText).subscribe(recipes => this.recipes.set(recipes));
+    this.foodService.searchForRecipe(searchText).subscribe(res => {
+      this.loading.set(false);
+      this.recipes.set(res.recipes.data);
+      this.totalPages.set(res.recipes.metadata.totalPages);
+    });
   }
 
   next() {

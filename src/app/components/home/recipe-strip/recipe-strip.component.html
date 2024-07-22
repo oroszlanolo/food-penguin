@@ -1,0 +1,9 @@
+@if(recipes().length > 0) {
+    <div class="strip-outer">
+        <div class="strip flex flex-row overflow-x-scroll gap-5 p-5 snap-x">
+            @for(recipe of recipes(); track recipe.name) {
+                <app-recipe-card [recipe]="recipe" class="snap-center lg:snap-start lg:scroll-ml-5"></app-recipe-card>
+            }
+        </div>
+    </div>
+}

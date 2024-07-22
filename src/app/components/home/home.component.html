@@ -1,2 +1,21 @@
-<h1 class="text-3xl">Home Page</h1>
-<p class="mt-5">Home page is still work in progress. Go to Recipes to find the available recipes!</p>
+<h1 class="text-3xl font-bold">Home Page</h1>
+@for(homeStrip of homeStrips; track homeStrip.title;let i = $index) {
+    <section class="mt-10">
+        <div class="flex flex-row">
+            <h2 class="text-2xl font-medium mr-auto">{{homeStrip.title}}</h2>
+            <button class="btn btn-ghost"
+                [disabled]="i === 0"
+                [class.!bg-transparent]="i === 0"
+                (click)="moveUp(i)">
+                    <span class="material-symbols-outlined">keyboard_arrow_up</span>
+            </button>
+            <button class="btn btn-ghost"
+                [disabled]="i >= homeStrips.length - 1"
+                [class.!bg-transparent]="i >= homeStrips.length - 1"
+                (click)="moveDown(i)">
+                    <span class="material-symbols-outlined">keyboard_arrow_down</span>
+            </button>
+        </div>
+        <app-recipe-strip [homeType]="homeStrip.type"></app-recipe-strip>
+    </section>
+}
