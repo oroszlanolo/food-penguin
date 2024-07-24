@@ -26,6 +26,7 @@ export class AppComponent implements OnInit{
   navigationItems = navBar;
   path = "";
   menuOpen = false;
+  screenWidth? : number;
 
   get loggedIn() {
     return this.userService.loggedIn;
@@ -44,6 +45,7 @@ export class AppComponent implements OnInit{
 
   ngOnInit(): void {
     this.path = this.location.path(true);
+    this.screenWidth = window.innerWidth;
   }
 
 }
