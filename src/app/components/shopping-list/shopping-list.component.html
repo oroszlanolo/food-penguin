@@ -1,34 +1,43 @@
 <div class="px-2">
     <h1 class="text-3xl text-primary font-medium m-auto w-fit mb-6">Shopping list</h1>
-    <div class="flex flex-col gap-2 md:flex-row items-center max-w-4xl m-auto mb-6">
-        <input type="text"  class="input w-full input-bordered md:w-auto md:flex-1" placeholder="Add new item" />
-        <button class="btn w-full btn-primary md:w-auto text-lg">
-            Add
+    <form #addItemForm="ngForm" (ngSubmit)="onAddItem(addItemForm)" class="flex flex-col gap-2 md:flex-row items-center max-w-4xl m-auto mb-6">
+        <input name="quantity" type="number" ngModel placeholder="1" class="input input-bordered w-full md:w-auto md:flex-1"/>
+        <input name="unit" type="text" ngModel placeholder="kg" class="input input-bordered w-full md:w-auto md:flex-1"/>
+        <input name="name" type="text" ngModel required placeholder="chicken breast" class="input input-bordered w-full md:w-auto md:flex-1"  [class.input-error]="addItemForm.controls.name && addItemForm.controls.name.invalid && addItemForm.controls.name.touched"/>
+        <button type="submit" [disabled]="addItemForm.controls.name && addItemForm.controls.name.invalid" class="btn w-full btn-primary md:w-auto text-lg">
+            @if(loading) {
+                <span  class="loading loading-spinner loading-md text-primary"></span>
+            }@else {
+                <span >Add</span>
+            }
         </button>
+    </form>
+    <div class="flex justify-between items-center max-w-2xl m-auto">
+        <h2 class="text-xl font-bold">Remaining</h2>
+        <button class="btn mb-2" (click)="share()" [disabled]="shoppingList.length === 0">Share</button>
     </div>
     <ul class="max-w-2xl m-auto">
-        @for(item of shoppingList; track item) {
-            <li class="text-xl font-medium p-2 border-2 border-primary-content rounded-md my-2" >
-                {{item.name}}
+        @for(item of shoppingList; track item._id) {
+            <li class="text-xl font-medium p-2 border-2 border-primary-content rounded-md my-2 cursor-pointer" (click)="completeItem(item)" >
+                {{(item.quantity || '') + ' ' + (item.unit || '') + ' ' + item.name}}
             </li>
         }
     </ul>
-    <div class="max-w-2xl m-auto mt-6">
-        <h2 class="text-xl font-bold">Completed</h2>
+    <div class="max-w-2xl m-auto mt-8">
+        <div class="flex justify-between items-center">
+            <h2 class="text-xl font-bold">Completed</h2>
+            <button class="btn mb-2" (click)="clearCompleted()" [disabled]="completedList.length === 0">Finish Shopping</button>
+        </div>
         <ul>
-            @for(item of completed; track item) {
-                <li class="text-xl font-medium p-2 border-2 border-base-300 text-base-300 rounded-md my-2" >
-                    <div class="flex flex-row justify-between">
-                        <span class="flex flex-row items-center gap-2">
-                            <span class="material-symbols-outlined">
-                                task_alt
-                            </span>
-                            {{item.name}}
-                        </span>
-                        <span class="material-symbols-outlined text-black">
-                            undo
-                        </span>
-                    </div>
+            @for(item of completedList; track item._id) {
+                <li (click)="uncompleteItem(item)" class="flex flex-row text-xl font-medium p-2 border-2 border-base-300 text-base-300 rounded-md my-2 cursor-pointer" >
+                    <span class="material-symbols-outlined mr-2">
+                        task_alt
+                    </span>
+                    {{(item.quantity || '') + ' ' + (item.unit || '') + ' ' + item.name}}
+                    <span class="undo material-symbols-outlined text-black ml-auto transition-all" >
+                        undo
+                    </span>
                 </li>
             }
         </ul>

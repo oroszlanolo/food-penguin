@@ -1,0 +1,4 @@
+li:hover > .undo {
+    transform: scale(1.15);
+    text-shadow: 0px 0px 2px #00000063;
+}
