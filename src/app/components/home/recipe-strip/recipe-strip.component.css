@@ -1,5 +1,6 @@
 .strip-outer {
     position: relative;
+    isolation: isolate;
 }
 
 .strip-outer::before,
