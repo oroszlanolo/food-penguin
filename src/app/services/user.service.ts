@@ -37,8 +37,8 @@ export class UserService {
           });
           this.googleReady = true;
           this.googleReadyEvt.emit();
+          google.accounts.id.prompt();
         }
-        // google.accounts.id.prompt();
       }
   }
 
