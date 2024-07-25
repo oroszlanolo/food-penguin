@@ -3,6 +3,8 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 
 import { EditRecipeComponent } from './edit-recipe.component';
 import { provideRouter } from '@angular/router';
+import { provideToastr } from 'ngx-toastr';
+
 
 describe('EditRecipeComponent', () => {
   let component: EditRecipeComponent;
@@ -14,7 +16,8 @@ describe('EditRecipeComponent', () => {
       HttpClientTestingModule,
       EditRecipeComponent],
     providers: [
-      provideRouter([])
+      provideRouter([]),
+      provideToastr()
     ]
 })
     .compileComponents();

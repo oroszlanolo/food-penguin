@@ -165,7 +165,12 @@ export class RecipeViewComponent implements OnInit {
   }
 
   edit() {
-    this.router.navigate(['/edit'], {state: {recipe: this.recipe}});
+    this.router.navigate(['/edit'],
+      {state: {
+        recipe: this.recipe,
+        editingExistingRecipe: true
+      }}
+    );
   }
 
   delete() {

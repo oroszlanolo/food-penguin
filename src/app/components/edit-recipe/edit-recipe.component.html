@@ -179,6 +179,6 @@
                 }
             </div>
           </div>
-        <button type="submit" [disabled]="!validateRecipe() || !loggedIn" class="btn btn-secondary mt-10">Add Recipe</button>
+        <button type="submit" [disabled]="!validateRecipe() || !loggedIn" class="btn btn-secondary mt-10">{{editingExistingRecipe ? 'Update Recipe' : 'Add Recipe'}}</button>
     </form>
 </div>

@@ -3,6 +3,8 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 
 import { RecipeViewComponent } from './recipe-view.component';
 import { provideRouter } from '@angular/router';
+import { provideToastr } from 'ngx-toastr';
+
 
 describe('RecipeViewComponent', () => {
   let component: RecipeViewComponent;
@@ -14,7 +16,8 @@ describe('RecipeViewComponent', () => {
       HttpClientTestingModule,
       RecipeViewComponent],
     providers: [
-      provideRouter([])
+      provideRouter([]),
+      provideToastr()
     ]
 })
     .compileComponents();

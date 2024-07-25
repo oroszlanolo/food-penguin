@@ -9,6 +9,7 @@ import { DishTypePipe } from '../../pipes/dish-type.pipe';
 import { NgIf, NgClass, NgFor, TitleCasePipe } from '@angular/common';
 import { UserService } from 'src/app/services/user.service';
 import { CheckCardComponent } from "../units/check-card/check-card.component";
+import { ToastrService } from 'ngx-toastr';
 
 type Tab = 'overview' | 'ingredients' | 'directions';
 @Component({
@@ -26,6 +27,7 @@ export class EditRecipeComponent implements OnInit{
   object = Object;
   activeTab : Tab = 'overview'
   sectionId = 2;
+  editingExistingRecipe = false;
 
   constructor(
     private router : Router,
@@ -33,7 +35,8 @@ export class EditRecipeComponent implements OnInit{
     private foodService : FoodService,
     private imgService: ImageService,
     private fb: FormBuilder,
-    private user: UserService) {}
+    private user: UserService,
+    private toastr: ToastrService) {}
 
   get loggedIn(){
     return this.user.loggedIn;
@@ -160,11 +163,12 @@ export class EditRecipeComponent implements OnInit{
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id') ?? '';
-    console.log(this.id);
-    console.log(this.object.keys(this.dishTypes));
     if(window.history.state?.recipe) {
       this.recipe = window.history.state.recipe;
       this.#updateRecipeForm();
+    }
+    if(window.history.state?.editingExistingRecipe) {
+      this.editingExistingRecipe = true;
     }
     if(window.history.state?.url) {
       this.url = window.history.state.url;
@@ -192,6 +196,7 @@ export class EditRecipeComponent implements OnInit{
       this.foodService.addOrUpdateRecipe(this.recipe).subscribe({
         next: (id) => {
           console.log('id', id);
+          this.toastr.success(`Recipe ${this.editingExistingRecipe ? 'updated' : 'added'}`);
           this.router.navigate([`/recipe/${id}`]);
         },
         error: err => console.log(err)
