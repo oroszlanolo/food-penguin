@@ -1,4 +1,4 @@
-<a href="recipe/{{recipe()._id}}"
+<a routerLink="/recipe/{{recipe()._id}}"
 class="card min-w-80 max-w-full h-full bg-base-100 drop-shadow-xl overflow-hidden hover:scale-105 transition-transform cursor-pointer">
     @if(recipe().images.length > 0) {
         <figure class="h-60"><img class="min-h-full object-cover" src="{{recipe().images[0].includes('http') ? recipe().images[0] : (recipeServerUrl + 'api/image?id=' + recipe().images[0] + '&size=medium')}}" alt="{{recipe().name}}" /></figure>
