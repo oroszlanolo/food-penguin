@@ -10,6 +10,7 @@ import { ImageViewComponent } from "../image-view/image-view.component";
 import { ShoppingListNewItem } from 'src/shopping';
 import { ShoppingListService } from 'src/app/services/shopping-list.service';
 import { FormsModule } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -50,7 +51,8 @@ export class RecipeViewComponent implements OnInit {
     private location: Location,
     private foodService : FoodService,
     private user: UserService,
-    private shoppingService: ShoppingListService
+    private shoppingService: ShoppingListService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -152,6 +154,9 @@ export class RecipeViewComponent implements OnInit {
     });
     this.shoppingService.addItems(itemsToAdd).subscribe();
     this.deselectAllIngredients();
+    this.toastr.success(
+      `${itemsToAdd.length} item${itemsToAdd.length > 1 ?  's' : ''} added to the shopping list`,
+      'Success!');
   }
 
   selectDirection(section: number, idx : number) {
