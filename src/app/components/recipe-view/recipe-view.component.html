@@ -66,7 +66,7 @@
                     <ul>
                         @for(ingredient of section.ingredients; track ingredient.name; let j = $index) {
                             <li class="mb-1 text-xl">
-                                <input type="checkbox" id="cb-ing-{{i}}-{{j}}" class="mr-2" (change)="toggleIngredient(i, j)">
+                                <input type="checkbox" id="cb-ing-{{i}}-{{j}}" class="mr-2" [(ngModel)]="ingredientSelection[i][j]" >
                                 <label for="cb-ing-{{i}}-{{j}}">
                                     @if(ingredient.quantity > 0){
                                         <span class="mr-1">{{ingredient.quantity * servingRation | number: '1.0-1'}}</span>
@@ -81,7 +81,7 @@
             </div>
         }
         <div class="flex flex-row justify-center w-full my-2">
-            <button class="btn btn-primary" disabled>Add to Shopping List</button>
+            <button class="btn btn-primary" [disabled]="selectedIngredientNum === 0" (click)="addToShoppingList()">Add to Shopping List</button>
         </div>
         <div class="flex flex-row justify-center w-full mt-5 gap-5">
             <button class="btn btn-neutral min-w-32" (click)="normalize()" [disabled]="selectedIngredientNum !== 1">Normalize</button>

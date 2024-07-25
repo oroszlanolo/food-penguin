@@ -7,6 +7,9 @@ import { environment } from 'src/environments/environment';
 import { UserService } from 'src/app/services/user.service';
 import { ingredientNormalizerMult } from 'src/utils/ingredient_helper';
 import { ImageViewComponent } from "../image-view/image-view.component";
+import { ShoppingListNewItem } from 'src/shopping';
+import { ShoppingListService } from 'src/app/services/shopping-list.service';
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
@@ -14,7 +17,7 @@ import { ImageViewComponent } from "../image-view/image-view.component";
     templateUrl: './recipe-view.component.html',
     styleUrls: ['./recipe-view.component.css'],
     standalone: true,
-    imports: [NgIf, NgFor, NgClass, DecimalPipe, TitleCasePipe, ImageViewComponent]
+    imports: [NgIf, NgFor, NgClass, DecimalPipe, TitleCasePipe, ImageViewComponent, FormsModule ]
 })
 export class RecipeViewComponent implements OnInit {
   recipe? : Recipe;
@@ -46,7 +49,8 @@ export class RecipeViewComponent implements OnInit {
     private route: ActivatedRoute,
     private location: Location,
     private foodService : FoodService,
-    private user: UserService
+    private user: UserService,
+    private shoppingService: ShoppingListService
   ) {}
 
   ngOnInit(): void {
@@ -96,6 +100,15 @@ export class RecipeViewComponent implements OnInit {
   toggleIngredient(sectionNum: number, ingredientNum: number) {
     this.ingredientSelection[sectionNum][ingredientNum] = !this.ingredientSelection[sectionNum][ingredientNum];
   }
+
+  deselectAllIngredients() {
+    this.ingredientSelection.forEach(section => {
+      for(let i = 0; i < section.length; i++) {
+        section[i] = false;
+      }
+    })
+  }
+
   getIngredient(sectionNum: number, ingredientNum: number) : Ingredient | undefined {
     return this.recipe?.sections[sectionNum].ingredients[ingredientNum];
   }
@@ -118,9 +131,27 @@ export class RecipeViewComponent implements OnInit {
     if(selectedIngredients.length == 0) {
       return;
     }
-    const baseIngredient : Ingredient = this.getSelectedIngredients()[0];
+    const baseIngredient : Ingredient = selectedIngredients[0];
     const mult = ingredientNormalizerMult(baseIngredient);
     this.setServingRation(mult);
+  }
+
+  addToShoppingList() {
+    const selectedIngredients = this.getSelectedIngredients();
+    if(selectedIngredients.length == 0) {
+      return;
+    }
+    const itemsToAdd : ShoppingListNewItem[] = selectedIngredients.map(i => {
+      return {
+        name: i.name,
+        unit: i.unit,
+        quantity: parseFloat((i.quantity * this.servingRation).toFixed(1)),
+        note: i.note,
+        completed: false
+      }
+    });
+    this.shoppingService.addItems(itemsToAdd).subscribe();
+    this.deselectAllIngredients();
   }
 
   selectDirection(section: number, idx : number) {

@@ -39,6 +39,18 @@ export class ShoppingListService {
     });
   }
 
+  addItems(items: ShoppingListNewItem[]) : Observable<ShoppingList> {
+    if(!this.user.accessToken) {
+      return this.dummyService.addItems(items);
+    }
+    console.log('lefut');
+    return this.http.post<ShoppingList>((this.recipeServerUrl + '/shoppinglist/items'), { items: JSON.stringify(items) }, {
+      headers: {
+        'Authorization':  this.user.accessToken
+      }
+    });
+  }
+
   completeItem(id: string) : Observable<boolean> {
     if(!this.user.accessToken) {
       return this.dummyService.completeItem(id);
@@ -87,6 +99,18 @@ class UnauthorizedShoppingListService {
       ...item
     })
     this.index++;
+    return of(this.shoppingList);
+  }
+
+  addItems(items: ShoppingListNewItem[]) : Observable<ShoppingList> {
+    const newItems : ShoppingListItem[] = items.map(item => {
+      this.index++
+      return {
+        _id: this.index.toString(),
+        ...item
+      }
+    })
+    this.shoppingList.push(...newItems);
     return of(this.shoppingList);
   }
   completeItem(id: string) : Observable<boolean> {

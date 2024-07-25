@@ -19,7 +19,8 @@
     <ul class="max-w-2xl m-auto">
         @for(item of shoppingList; track item._id) {
             <li class="text-xl font-medium p-2 border-2 border-primary-content rounded-md my-2 cursor-pointer" (click)="completeItem(item)" >
-                {{(item.quantity || '') + ' ' + (item.unit || '') + ' ' + item.name}}
+                {{(item.quantity || '') + ' ' + (item.unit || '') + ' '}}
+                <span class="text-secondary font-medium">{{item.name}}</span>
             </li>
         }
     </ul>
